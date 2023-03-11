@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>EShopper - Bootstrap Shop Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Topbar Start -->
+    <div class="container-fluid">
+        <div class="row align-items-center py-3 px-xl-5">
+            <div class="col-lg-3 d-none d-lg-block">
+                <a href="" class="text-decoration-none">
+                    <h1 class="m-0 display-5 font-weight-semi-bold"><span
+                            class="text-primary font-weight-bold border px-3 mr-1"><img style="height:50px"
+                                src="/img/logo.jpg"></span></h1>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- Topbar End -->
+
+    <!-- Cart Start -->
+    <div class="container-fluid pt-5">
+        <div class="row px-xl-5">            
+            <div class="col-lg-8 table-responsive mb-5">               
+                <table class="table table-bordered text-center mb-0">
+                    <h4 class="text-center text danger">{{noItem}}</h4>
+                    <thead class="bg-secondary text-dark">
+                        <tr>               
+                            <th>Image</th>
+                            <th>Products</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody class="align-middle">
+                        {{#each product}}
+                        <tr>
+                            <td class="align-middle"><img src="/product-images/{{this.main_image.filename}}" alt=""
+                                    style="width: 50px; height:60px"></td>
+                            <td class="align-middle">{{this.name}}</td>
+                            <td class="align-middle">{{this.price}}</td>
+                            <td class="align-middle">
+                                <div class="input-group quantity mx-auto" style="width: 100px;">
+                                    
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-sm btn-primary btn-minus" onclick="decQuantity('{{this._id}}','{{this.price}}')"><i class="fa fa-minus"></i></button>
+                                    </div>
+                                    <input type="text" class="form-control form-control-sm bg-secondary text-center" id="q{{this._id}}" readonly
+                                    value="{{this.cartQty}}">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-sm btn-primary btn-plus" onclick="addQuantity('{{this._id}}','{{this.price}}')"><i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="align-middle" id="price{{this._id}}">Rs. {{this.subtotal}}</td>
+                            <td class="align-middle"><button class="btn btn-sm btn-primary"><a style="color:white;"
+                                                href="/removeFromCart/{{ this._id }}"><i
+                                        class="fa fa-trash"></i></a></button></td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-4">
+                <form class="mb-5" action="">
+                    <div class="input-group">
+                        <input type="text" class="form-control p-4" placeholder="Coupon Code">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary">Apply Coupon</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="card border-secondary mb-5">
+                    <div class="card-header bg-secondary border-0">
+                        <h4 class="font-weight-semi-bold m-0">Cart Summary</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3 pt-1">
+                            <h6 class="font-weight-medium">Subtotal</h6>
+                            <h6 class="font-weight-medium" id="subTotal">{{totalPrice}}</h6>
+                        </div>
+                        
+                    </div>
+                    <div class="card-footer border-secondary bg-transparent">
+                        <div class="d-flex justify-content-between mt-2">
+                            <h5 class="font-weight-bold">Total</h5>
+                            <h5 class="font-weight-bold" id="totalPrice">Rs. {{totalPrice}}</h5>
+                        </div>
+                        <button class="btn btn-block btn-primary my-3 py-3"><a style="color:white;text-decoration:none;"
+                                href="/checkout">Proceed To Checkout</a></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Cart End -->
+
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-secondary text-dark mt-5 pt-5">
+
+        <div class="row border-top border-light mx-xl-5 py-4">
+            <div class="col-md-6 px-xl-0">
+                <p class="mb-md-0 text-center text-md-left text-dark">
+                    &copy; <a class="text-dark font-weight-semi-bold" href="#">United We Stand</a>. All Rights Reserved.
+                    Designed
+                    by
+                    <a class="text-dark font-weight-semi-bold" href="https://htmlcodex.com">Benazir</a><br>
+                    Distributed By <a href="https://eyeland.co.in" target="_blank">Suyan</a>
+                </p>
+            </div>
+            <div class="col-md-6 px-xl-0 text-center text-md-right">
+                <img class="img-fluid" src="img/payments.png" alt="">
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Contact Javascript File -->
+    <script src="mail/jqBootstrapValidation.min.js"></script>
+    <script src="mail/contact.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+
+     <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+
+<script>
+
+let totalPrice=Number({{totalPrice}})
+
+console.log(totalPrice)
+
+        async function addQuantity(id,price){
+            const response=await axios.get('/addQuantity/'+id)
+            if(response.data.user?.acknowledged){
+                var quantity=document.getElementById('q'+id).value
+                var priceTag=document.getElementById('price'+id)
+                var totalPriceTag=document.getElementById('totalPrice')
+                var subTotalPriceTag=document.getElementById('subTotal')
+
+                quantity++
+
+                totalPrice=Number(totalPrice)+Number(price)
+
+                 totalPriceTag.innerHTML=totalPrice;
+                 subTotalPriceTag.innerHTML=totalPrice
+                priceTag.innerHTML= 'Rs. '+quantity*price;
+                document.getElementById('q'+id).value=quantity;
+                document.getElementById('mq'+id).value=quantity;
+
+            }
+            else{
+                console.log('eror')
+            }
+        }
+         async function decQuantity(id,price){
+            console.log('enter')
+            const response=await axios.get('/minusQuantity/'+id)
+            if(response.data.user?.acknowledged){
+                console.log('in')
+                var quantity=document.getElementById('q'+id).value;
+                 var totalPriceTag=document.getElementById('totalPrice')
+                var subTotalPriceTag=document.getElementById('subTotal')
+               
+                if(quantity<=0){
+                    window.location.reload()
+                }
+                var priceTag=document.getElementById('price'+id)
+                quantity--
+
+                totalPrice=Number(totalPrice)-Number(price)
+
+                 totalPriceTag.innerHTML=totalPrice;
+                 subTotalPriceTag.innerHTML=totalPrice    
+
+                priceTag.innerHTML= '₹'+quantity*price; 
+                document.getElementById('q'+id).value=quantity;
+                document.getElementById('mq'+id).value=quantity;
+            }else{
+                window.location.reload()
+            }
+        }
+</script>
+
+</body>
+
+</html>
