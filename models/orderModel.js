@@ -18,10 +18,13 @@ const orderSchema=new mongoose.Schema({
         type:Object,
         required:true
     },
-    createdAt:{
-        type:Date,
-        default: new Date()
-    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+        get: function(date) {
+          return date.toLocaleDateString();
+        }
+      },
     userId:{
         type:String,
         required:true

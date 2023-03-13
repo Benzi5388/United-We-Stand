@@ -4,10 +4,10 @@
       <div class="col col-xl-10">
         <div class="card" style="border-radius: 1rem;">
           <div class="row g-0">
-            <div class="col-md-6 col-lg-5 d-none d-md-block">
+            {{!-- <div class="col-md-6 col-lg-5 d-none d-md-block">
               <img style="padding-top:70px" src="/img/signin.jpg" alt="login form" class="img-fluid"
                 style="border-radius: 1rem 0 0 1rem;" />
-            </div>
+            </div> --}}
             <div class="col-md-6 col-lg-7 d-flex align-items-center">
               <div class="card-body p-4 p-lg-5 text-black">
 
@@ -39,6 +39,11 @@
                   <div class="form-outline mb-4">
                     <input type="number" id="form2Example27" class="form-control form-control-lg" name="zipcode" placeholder="Zip-Code" required>
                   </div>
+                  {{#if err}}
+                                <div class="mb-3 text-center">
+                                    <b class="text-danger">{{message}}</b>
+                                </div>
+                                {{/if}}
                   <div class="pt-1 mb-4">
                     <button class="btn btn-lg btn-block text-white" type="submit" style="background-color:#fc0c7f">Add</button>
                   </div>

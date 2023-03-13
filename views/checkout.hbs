@@ -50,8 +50,10 @@
                 <div class="mb-4">
                     <h4 class="font-weight-semi-bold mb-4">Billing Address</h4>
                 </div>
+                <div class="row">
                 {{#each user.address}}
-                <div class="card" style="width: 16rem;height: 30%;">
+                <div class="card" style="width: 16rem;height: 30%; display: inline-block;
+    margin-right: 20px;">
                     <div class="card-body" >
                             <input type="radio" value="{{this._id}}" name="address" id="{{this._id}}" required>
                         <h5 class="card-title">Address</h5>
@@ -63,28 +65,7 @@
                     </div>
                 </div>
                 {{/each}}
-                
-                {{!-- <div class="form-check">
-                    <input class="form-check-input" type="radio" name="address" id="address-{{this._id}}"
-                        value="{{this.id}}">
-
-                    <label class="form-check-label" for="flexRadioDefault1">
-
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <p class="mb-0">Address:-</p>
-                            </div>
-                            <div class="col-sm-9">
-                                <p class="text-muted mb-0">{{this.name}}</p>
-                                <p class="text-muted mb-0">{{this.phone}}</p>
-                                <p class="text-muted mb-0">{{this.street}}</p>
-                                <p class="text-muted mb-0">{{this.state}}</p>
-                                <p class="text-muted mb-0">{{this.zipcode}}</p>
-                            </div>
-                        </div>
-                        <hr>
-                    </label>
-                </div> --}}
+                </div>
                 
             </div>
             <div class="col-lg-4">
@@ -138,7 +119,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    
 
     </form>
 

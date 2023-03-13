@@ -80,8 +80,12 @@ const verifyOtp = (req, res) => {
 const signup = async (req, res) => {
     const { name, email, phone, password } = req.body;
     const duplicate = await userModel.findOne({ email })
+    const hasWhiteSpaceName = /\s/g.test(name);
+    const hasWhiteSpaceph = /\s/g.test(phone);
+    const hasWhiteSpacepass = /\s/g.test(password);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // regular expression to check if email address is in valid format
 
-    if (email == "" || password == "" || phone == "" || password == "") {
+    if (hasWhiteSpaceName || name.trim() === "" || !emailRegex.test(email) || email == "" || hasWhiteSpaceph || phone.trim() === "" || hasWhiteSpacepass || password.trim() === "") {
         const err = 'all field required'
         return res.render('userSignup', { err: true, message: 'all fields required' })
     } else if (duplicate) {
@@ -438,12 +442,11 @@ const postCheckout=async (req,res)=>{
             .catch(function (error) {
                 console.error(error);
             });
-        } else {  
+        } else {  
     let orders = []
     let i = 0
     let cartLength = user.cart.length
     for (let item of product) {
-
         await productModel.updateOne(
             { _id: item._id },
             {
@@ -539,7 +542,7 @@ const getpaymentUrl=async(req,res)=>{
 }catch (err) {
         console.log(err);
         res.redirect('error-page')
-        }
+    }
 }
 
 //*******************PRODUCT DETAIL PAGE********************************* */
@@ -559,7 +562,6 @@ const getproductDetail = async (req, res) => {
 //****************************SHOP PAGE************************************************* */
 //GET METHOD FOR SHOP PAGE
 const getShop = async (req, res) => {
-
     let products = await productModel.find().lean()
     let category = await categoryModel.find().lean()
     res.render('shop', { products, category })
@@ -578,20 +580,7 @@ const getUserProfile = async (req, res) => {
     res.render('userProfile', { user })
 }
 
-//POST REQUEST FOR USER PROFILE
 
-const addAddress = async (req, res) => {
-    const _id = req.session.user.id
-    await userModel.updateOne({ _id }, {
-        $addToSet: {
-            address: {
-                ...req.body,
-                id: createId(),
-            }
-        }
-    })
-    res.redirect('/userProfile')
-}
 
 //**********************WISH LIST******************************************************** */
 //GET REQUEST FOR WISH LIST
@@ -636,6 +625,30 @@ const getaddAddress = async (req, res) => {
     res.render('add-address')
 }
 
+//POST REQUEST FOR ADD ADDRESS
+const addAddress = async (req, res) => {
+    const _id = req.session.user.id
+    const {name, street, city, state}=req.body
+    const hasWhiteSpaceName = /\s/g.test(name);
+    const hasWhiteSpaceStreet = /\s/g.test(street);
+    const hasWhiteSpaceCity = /\s/g.test(city);
+    const hasWhiteSpaceState = /\s/g.test(state);
+  if (hasWhiteSpaceName || name.trim() === "" || hasWhiteSpaceStreet || street.trim() === ""|| hasWhiteSpaceCity || city.trim() === "" ||hasWhiteSpaceState || state.trim() === "") {
+    const err = "all field reqiured";
+    res.render("add-address", { err: true, message: "Invalid Data!!!" });
+  } else {
+    await userModel.updateOne({ _id }, {
+        $addToSet: {
+            address: {
+                ...req.body,
+                id: createId(),
+            }
+        }
+    })
+    res.redirect('/userProfile')
+}
+}
+
 // DELETING ADDRESS
 const deleteAddress = async (req, res) => {
     const _id = req.session.user.id
@@ -658,19 +671,29 @@ const geteditAddress = async (req, res) => {
 
 //POST REQUEST FOR EDIT ADDRESS
 const editAddress = async (req, res) => {
-    const id = req.body._id
+    const id = req.body.id
     console.log(id);
-
+    const {name, street, city, state}=req.body
+    const hasWhiteSpaceName = /\s/g.test(name);
+    const hasWhiteSpaceStreet = /\s/g.test(street);
+    const hasWhiteSpaceCity = /\s/g.test(city);
+    const hasWhiteSpaceState = /\s/g.test(state);
+  if (hasWhiteSpaceName || name.trim() === "" || hasWhiteSpaceStreet || street.trim() === ""|| hasWhiteSpaceCity || city.trim() === "" ||hasWhiteSpaceState || state.trim() === "") {
+    const err = "all field reqiured";
+    res.render("edit-address", { err: true, message: "Invalid Data!!!" });
+  } else {
     await userModel.updateOne(
         {
             _id: req.session.user.id,
-            address: { $elemMatch: { id: req.body._id } }
+            address: { $elemMatch: { id: req.body.id } }
         },
         { $set: { "address.$": req.body } }
 
     )
     res.redirect("/userProfile")
 }
+}
+
 //***********************ORDER PLACED************************************************ */
 //GET REQUEST FOR ORDER PLACED
 const getorderPlaced = async (req, res) => {
