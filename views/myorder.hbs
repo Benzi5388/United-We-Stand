@@ -26,24 +26,53 @@
 </head>
 
 <body>
-  <!-- Topbar Start -->
+    <!-- Topbar Start -->
     <div class="container-fluid">
         <div class="row align-items-center py-3 px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
                 <a href="" class="text-decoration-none">
                     <h1 class="m-0 display-5 font-weight-semi-bold"><span
-                            class="text-primary font-weight-bold border px-3 mr-1"><img style="height:50px"
+                            class="text-primary font-weight-bold border px-3 mr-1"><img style="height:60px"
                                 src="/img/logo.jpg"></span></h1>
+                </a>
+            </div>
+            <div class="col-lg-6 col-6 text-left">
+                
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">My orders</li>
+          </ol>
+        
+            </div>
+            <div class="col-lg-3 col-6 text-right">
+                <a href="/userProfile" class="btn border">
+                    <i class="fas fa-user-check text-primary"></i>
+                    <span class="badge">0</span>
+                </a>
+                <a href="/cart" class="btn border">
+                    <i class="fas fa-shopping-cart text-primary"></i>
+                    <span class="badge">0</span>
                 </a>
             </div>
         </div>
     </div>
     <!-- Topbar End -->
 
-    <!-- Cart Start -->
-    <div class="container-fluid pt-5">
+    <!-- Order Start -->
+    <div class="container-fluid pt-2">
+        {{#if empty}}
+        <div class="row">
+                <div class="d-flex justify-content-center align-items-center">
+                    <img src="/img/noorder.jpg" style="max-height: 300px; object-fit:contain" alt="">
+                    <h1>No Orders Yet</h1>
+                </div>
+ </div>
+ <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-4">
+        <button type="button" class="btn btn btn-lg px-4 gap-3 " style="background-color:#fc0c7f"><a href="/"style="text-decoration:none;color:white;">CONTINUE SHOPPING</a></button>
+      </div>
+        {{else}}
         <div class="row px-xl-5">
-            <div class="col-lg-8 table-responsive mb-5">
+            <div class="col-lg-10 table-responsive mb-5">
                 <div>
                     <h4>MY ORDERS</h4>
                 </div>
@@ -54,6 +83,7 @@
                             <th>Products</th>
                             <th> Total Price</th>
                             <th>Delivery Status</th>
+                            <th>Action</th>
                             <th>View</th>
                             
                         </tr>
@@ -65,6 +95,9 @@
                             <td class="align-middle">{{this.product.name}}</td>
                             <td class="align-middle">{{this.total}}</td>
                             <td class="align-middle">{{this.orderStatus}}</td>
+                            <td class="align-middle"><a class="btn btn-outline-primary" href="/admin/edit-brand/{{this._id}}">Cancel</a>
+                                        <a class="btn btn-outline-danger" href="/admin/delete-brand/{{this._id}}"
+                                            onclick="return confirm('Are you sure you want to return?')">Return</a></td>
                             <td class="align-middle"><button class="btn btn-sm btn-primary"><a href="/productDetails/{{this.product._id}}" style="color:white;"><i class="bi bi-eye"></i></a></button></td>
                         </tr>
                         {{/each}}
@@ -73,10 +106,28 @@
             </div>
             
         </div>
+        {{/if}}
     </div>
     <!-- Cart End -->
 
-
+    <!-- Footer Start -->
+    <div class="container-fluid bg-secondary text-dark mt-5 pt-0" >
+       <div class="row border-top border-light mx-xl-5 py-4"  >
+            <div class="col-md-6 px-xl-0">
+                <p class="mb-md-0 text-center text-md-left text-dark">
+                    &copy; <a class="text-dark font-weight-semi-bold" href="#">United We Stand</a>. All Rights Reserved.
+                    Designed
+                    by
+                    <a class="text-dark font-weight-semi-bold" href="https://htmlcodex.com">Benazir</a><br>
+                    Distributed By <a href="https://eyeland.co.in" target="_blank">Suyan</a>
+                </p>
+            </div>
+            <div class="col-md-6 px-xl-0 text-center text-md-right">
+                <img class="img-fluid" src="img/payments.png" alt="">
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
 
 
 

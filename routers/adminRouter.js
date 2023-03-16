@@ -6,13 +6,19 @@ const adminModel = require('../models/adminModel')
 const brandModel = require('../models/brandModel')
 const categoryModel = require('../models/categoryModel')
 const { route } = require('./userRouter')
+const verifyAdmin = require('../middlewares/adminSession');
 
-router.get('/', adminhome)
+
+
 
 router.get('/adminLogin', adminlogin)
 router.post('/adminLogin', login)
-router.get('/logout', logout)
 
+router.get('/logout', logout)
+router.get('/', adminhome)
+
+
+router.use(verifyAdmin)
 router.get('/add-category', getaddCategory)
 router.post('/add-category', multipleUpload.upload, addCategory)
 router.get('/category', getCategory)

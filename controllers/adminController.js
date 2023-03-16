@@ -24,11 +24,7 @@ const adminhome = async (req, res) => {
 
 //POST METHOD FOR ADMIN LOGIN
 const adminlogin = (req, res) => {
-  if (req.session.admin) {
-    res.redirect("/admin");
-  } else {
     res.render("adminLogin");
-  }
 };
 
 //POST REQUEST FOR LOGIN PAGE
@@ -37,8 +33,8 @@ const login = (req, res) => {
   const password = "1234";
 
   if (email == req.body.email && password == req.body.password) {
-    req.session.admin = {
-      id: email,
+    req.session.admin= {
+      id:email,
     };
     res.redirect("/admin");
   } else {
@@ -281,7 +277,6 @@ const deleteBrand = async (req, res) => {
 //GET REQUEST FOR PRODUCT PAGE
 const getProduct = async (req, res) => {
   const products = await productModel.find().lean();
-  console.log(products);
   res.render("product", { products });
 };
 
@@ -335,33 +330,35 @@ const addProduct = async (req, res) => {
 const getEditProduct = async (req, res) => {
   const _id = req.params.id;
   const product = await productModel.findOne({ _id }).lean();
-  const brand = await brandModel.findOne({ _id }).lean();
-  const category = await categoryModel.find({_id}).lean();
+  const brand = await brandModel.find().lean();
+  const category = await categoryModel.find().lean();
+  
   res.render("edit-product", { product, category, brand });
 };
 
 //POST REQUEST FOR EDIT-PRODUCT
 const editProduct = async (req, res) => {
   const _id = req.body._id
+  console.log(req.body);
   const category = await categoryModel.find({}).lean()
-  const brand = await brandModel.find({}).lean()
-  const product = await productModel.find({}).lean()
+  const brand = await brandModel.find().lean()
+  const product = await productModel.findOne({_id}).lean()
   const { name, price, mrp, description, quantity, category: selectedCategory , brand: selectedBrand } = req.body;
-  const hasWhiteSpaceName = /\s/g.test(name);
-  const hasWhiteSpaceDescription = /\s/g.test(description);
-  if (hasWhiteSpaceName || name.trim() === "" || hasWhiteSpaceDescription || description.trim() === "" || !selectedCategory || !selectedBrand) {
+ 
+  
+  if ( name.trim() === "" ||  description.trim() === "") {
     const err = "Invalid data";
+
     res.render("edit-product", { category, brand, product, err: true, message: "Invalid data!!!" });
-  }
-  console.log(req.files)
-  if (!req.files.main_image && !req.files.sub_image) {
+  }else{
+    if (!req.files.main_image && !req.files.sub_image) {
       await productModel.findByIdAndUpdate(_id, {
           $set: {
               ...req.body
           }
       })
   }
-  if (req.files.main_image && !req.files.sub_image) {
+  else if (req.files.main_image && !req.files.sub_image) {
       await productModel.findByIdAndUpdate(_id, {
           $set: {
               ...req.body,
@@ -369,7 +366,7 @@ const editProduct = async (req, res) => {
           }
       })
   }
-  if (!req.files.main_image && req.files.sub_image) {
+  else if (!req.files.main_image && req.files.sub_image) {
       await productModel.findByIdAndUpdate(_id, {
           $set: {
               ...req.body,
@@ -377,7 +374,7 @@ const editProduct = async (req, res) => {
           }
       })
   }
-  if (req.files.main_image && req.files.sub_image) {
+  else if (req.files.main_image && req.files.sub_image) {
       await productModel.findByIdAndUpdate(_id, {
           $set: {
               ...req.body,
@@ -388,6 +385,10 @@ const editProduct = async (req, res) => {
   }
   res.redirect("/admin/product")
 }
+  }
+  
+ 
+  
 
 
 //DELETE PRODUCT

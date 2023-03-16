@@ -8,8 +8,8 @@
                         <div class="col-md-6 col-lg-7 d-flex align-items-center">
                             <div class="card-body p-4 p-lg-5 text-black">
 
-                                <form action="/edit-address" method="post">
-                                    <input type="text" value="{{address.id}}"
+                                <form action="/edit-address/{{address.id}}" method="post">
+                                    <input type="text" name="id" value="{{address.id}}"
                                         style="height: 0px; visibility:hidden" name="_id">
                                     <div class="d-flex justify-content-center">
                                         <img style="height: 70px;width:130px" src="/img/logo.jpg">

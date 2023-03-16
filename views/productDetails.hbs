@@ -27,31 +27,28 @@
 </head>
 
 <body>
+
     <!-- Topbar Start -->
     <div class="container-fluid">
         <div class="row align-items-center py-3 px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
                 <a href="" class="text-decoration-none">
                     <h1 class="m-0 display-5 font-weight-semi-bold"><span
-                            class="text-primary font-weight-bold border px-3 mr-1"><img style="height:100px"
+                            class="text-primary font-weight-bold border px-3 mr-1"><img style="height:60px"
                                 src="/img/logo.jpg"></span></h1>
                 </a>
             </div>
             <div class="col-lg-6 col-6 text-left">
-                <form action="">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for products">
-                        <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-primary">
-                                <i class="fa fa-search"></i>
-                            </span>
-                        </div>
-                    </div>
-                </form>
+                
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Product Details</li>
+          </ol>
+        
             </div>
             <div class="col-lg-3 col-6 text-right">
-                <a href="/wishList" class="btn border">
-                    <i class="fas fa-heart text-primary"></i>
+                <a href="/userProfile" class="btn border">
+                    <i class="fas fa-user-check text-primary"></i>
                     <span class="badge">0</span>
                 </a>
                 <a href="/cart" class="btn border">
@@ -95,7 +92,7 @@
                 <h3 class="font-weight-semi-bold mb-4">Rs. {{product.price}}</h3>
                 <p class="mb-4">{{product.description}}</p>
                 <div class="d-flex mb-3">
-                    <p class="text-dark font-weight-medium mb-0 mr-3">Sizes:</p>
+                    {{!-- <p class="text-dark font-weight-medium mb-0 mr-3">Sizes:</p>
                     <form action="/productDetails">
                         <div class="custom-control custom-radio custom-control-inline">
                             <input type="radio" class="custom-control-input" id="size-1" name="size">
@@ -117,11 +114,11 @@
                             <input type="radio" class="custom-control-input" id="size-5" name="size">
                             <label class="custom-control-label" for="size-5">XL</label>
                         </div>
-                    </form>
+                    </form> --}}
                 </div>
                 <div class="d-flex mb-4">
-                    <p class="text-dark font-weight-medium mb-0 mr-3">Colors:</p>
-                    <form>
+                    {{!-- <p class="text-dark font-weight-medium mb-0 mr-3">Colors:</p> --}}
+                    {{!-- <form>
                         <div class="custom-control custom-radio custom-control-inline">
                             <input type="radio" class="custom-control-input" id="color-1" name="color">
                             <label class="custom-control-label" for="color-1">Black</label>
@@ -142,7 +139,7 @@
                             <input type="radio" class="custom-control-input" id="color-5" name="color">
                             <label class="custom-control-label" for="color-5">Green</label>
                         </div>
-                    </form>
+                    </form> --}}
                 </div>
                 <div class="d-flex align-items-center mb-4 pt-2">
                     <div class="input-group quantity mr-3" style="width: 130px;">
@@ -150,14 +147,14 @@
                             {{!-- <button class="btn btn-primary btn-minus">
                                 <i class="fa fa-minus"></i>
                             </button> --}}
-                            <a href="/minusquantity/{{product._id}}" class="btn btn-primary btn-minus" > <i class="fa fa-minus"></i></a>
+                            {{!-- <a href="/minusquantity/{{product._id}}" class="btn btn-primary btn-minus" > <i class="fa fa-minus"></i></a> --}}
                         </div>
-                        <input type="text" class="form-control bg-secondary text-center" value="1">
+                        {{!-- <input type="text" class="form-control bg-secondary text-center" value="1"> --}}
                         <div class="input-group-btn">
                             {{!-- <button class="btn btn-primary btn-plus">
                                 <i class="fa fa-plus"></i>
                             </button> --}}
-                             <a href="/addQuantity/{{product._id}}" class="btn btn-primary btn-minus" > <i class="fa fa-plus"></i></a>
+                             {{!-- <a href="/addQuantity/{{product._id}}" class="btn btn-primary btn-minus" > <i class="fa fa-plus"></i></a> --}}
                         </div>
                     </div>
                     
@@ -193,13 +190,7 @@
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="tab-pane-1">
                         <h4 class="mb-3">Product Description</h4>
-                        <p>Eos no lorem eirmod diam diam, eos elitr et gubergren diam sea. Consetetur vero aliquyam
-                            invidunt duo dolores et duo sit. Vero diam ea vero et dolore rebum, dolor rebum eirmod
-                            consetetur invidunt sed sed et, lorem duo et eos elitr, sadipscing kasd ipsum rebum diam.
-                            Dolore diam stet rebum sed tempor kasd eirmod. Takimata kasd ipsum accusam sadipscing, eos
-                            dolores sit no ut diam consetetur duo justo est, sit sanctus diam tempor aliquyam eirmod
-                            nonumy rebum dolor accusam, ipsum kasd eos consetetur at sit rebum, diam kasd invidunt
-                            tempor lorem, ipsum lorem elitr sanctus eirmod takimata dolor ea invidunt.</p>
+                        <p>{{product.description}}</p>
                         <p>Dolore magna est eirmod sanctus dolor, amet diam et eirmod et ipsum. Amet dolore tempor
                             consetetur sed lorem dolor sit lorem tempor. Gubergren amet amet labore sadipscing clita
                             clita diam clita. Sea amet et sed ipsum lorem elitr et, amet et labore voluptua sit rebum.

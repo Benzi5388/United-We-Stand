@@ -33,8 +33,26 @@
             <div class="col-lg-3 d-none d-lg-block">
                 <a href="" class="text-decoration-none">
                     <h1 class="m-0 display-5 font-weight-semi-bold"><span
-                            class="text-primary font-weight-bold border px-3 mr-1"><img style="height:50px"
+                            class="text-primary font-weight-bold border px-3 mr-1"><img style="height:60px"
                                 src="/img/logo.jpg"></span></h1>
+                </a>
+            </div>
+            <div class="col-lg-6 col-6 text-left">
+                
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Cart</li>
+          </ol>
+        
+            </div>
+            <div class="col-lg-3 col-6 text-right">
+                <a href="/userProfile" class="btn border">
+                    <i class="fas fa-user-check text-primary"></i>
+                    <span class="badge">0</span>
+                </a>
+                <a href="/cart" class="btn border">
+                    <i class="fas fa-shopping-cart text-primary"></i>
+                    <span class="badge">0</span>
                 </a>
             </div>
         </div>
@@ -42,7 +60,20 @@
     <!-- Topbar End -->
 
     <!-- Cart Start -->
+    
     <div class="container-fluid pt-5">
+        {{#if empty}}
+        <div class="row">
+                <div class="d-flex justify-content-center align-items-center">
+                    <img src="/img/emptycart.jpg" style="max-height: 300px; object-fit:contain" alt="">
+                    
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <button type="button" class="btn btn btn-lg px-4 gap-3 " style="background-color:#fc0c7f"><a href="/"style="text-decoration:none;color:white;">CONTINUE SHOPPING</a></button>
+      </div>
+            </div>
+            {{else}}
         <div class="row px-xl-5">            
             <div class="col-lg-8 table-responsive mb-5">               
                 <table class="table table-bordered text-center mb-0">
@@ -88,14 +119,6 @@
                 </table>
             </div>
             <div class="col-lg-4">
-                <form class="mb-5" action="">
-                    <div class="input-group">
-                        <input type="text" class="form-control p-4" placeholder="Coupon Code">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary">Apply Coupon</button>
-                        </div>
-                    </div>
-                </form>
                 <div class="card border-secondary mb-5">
                     <div class="card-header bg-secondary border-0">
                         <h4 class="font-weight-semi-bold m-0">Cart Summary</h4>
@@ -110,7 +133,7 @@
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold">Total</h5>
-                            <h5 class="font-weight-bold" id="totalPrice">Rs. {{totalPrice}}</h5>
+                            <h5 class="font-weight-bold" id="totalPrice">Rs. {{totalAmount}}</h5>
                         </div>
                         <button class="btn btn-block btn-primary my-3 py-3"><a style="color:white;text-decoration:none;"
                                 href="/checkout">Proceed To Checkout</a></button>
@@ -118,14 +141,14 @@
                 </div>
             </div>
         </div>
+        {{/if}}
     </div>
     <!-- Cart End -->
 
 
     <!-- Footer Start -->
-    <div class="container-fluid bg-secondary text-dark mt-5 pt-5">
-
-        <div class="row border-top border-light mx-xl-5 py-4">
+    <div class="container-fluid bg-secondary text-dark mt-5 pt-0" >
+       <div class="row border-top border-light mx-xl-5 py-4"  >
             <div class="col-md-6 px-xl-0">
                 <p class="mb-md-0 text-center text-md-left text-dark">
                     &copy; <a class="text-dark font-weight-semi-bold" href="#">United We Stand</a>. All Rights Reserved.
