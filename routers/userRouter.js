@@ -1,33 +1,36 @@
 const express = require('express');
-const {getUserHome, getSignup, userLogout, userlogin, signup, getOtp, getShop, verifyOtp, login, getproductDetail, getCart, addTocart, getUserProfile, getWishList, getaddAddress, addTowishList, getwishList, addAddress, deleteAddress, geteditAddress, editAddress, getcheckout, incrementCart, getorderPlaced, getmyOrder, getcheckOut, getAddtoCart, addQuantity, minusQuantity, getRemoveFromCart,
-     checkOut, postCheckout, getpaymentUrl, getRemoveFromWishlist, getCategorySort, menCateg, womenCateg, kidCateg, accCateg, bagCateg, couponApply, } = require('../controllers/userController');
+const {getUserHome, getUserProfile, getaddAddress, addTowishList, getwishList, addAddress, deleteAddress, geteditAddress, editAddress, getorderPlaced, getmyOrder,
+     getRemoveFromWishlist,  } = require('../controllers/userController');
+const { couponApply, getpaymentUrl, minusQuantity, addQuantity, getAddtoCart, getRemoveFromCart, getCart, getcheckOut, postCheckout, CancelOrder, ReturnOrder} = require ('../controllers/cartController')
+const {getproductDetail, getShop, getCategorySort} = require ('../controllers/productController')   
+const { getSignup, userLogout, userlogin, signup, getOtp, verifyOtp, login, getforgotpswrd, getresetpswrd, forgotpswrd, getlink, resetpswrd, getResetOtp, forgotPasswordOtp, } = require ('../controllers/userAuthController')    
 const router = express.Router()
 const userModel = require('../models/userModel')
 const twilio = require('twilio');
 const verifyUser = require('../middlewares/userSession');
-const checkingcart=require('../middlewares/checkingcart')
+const checkingcart=require('../middlewares/checkingcart');
 
 router.get('/', getUserHome)
 router.get('/login',login)
 router.post('/login',userlogin)
+router.get('/forgotpswrd',getforgotpswrd)
+router.post('/forgotpswrd', forgotpswrd)
+router.get('/link',getlink)
+router.get('/resetpswrd/:id/:token', getresetpswrd)
+router.post('/resetpswrd', resetpswrd)
+router.get("/reset-otp", getResetOtp )
+router.post("/forgot-password-otp", forgotPasswordOtp )
+
 router.get('/signup',getSignup)
-router.get('/logout',userLogout)
-router.get('/otp',getOtp)
-router.post('/otp', verifyOtp)
-router.post('/login',userlogin)
 router.post('/signup', signup)
 
+router.get('/logout',userLogout)
+
+router.get('/otp',getOtp)
+router.post('/otp', verifyOtp)
+
 router.get('/shop', getShop)
-
-
-// router.get('/menCateg', menCateg)
-// router.get('/womenCateg', womenCateg)
-// router.get('/kidCateg', kidCateg)
-// router.get('/accCateg', accCateg)
-// router.get('/bagCateg', bagCateg)
-
 router.post('/categorySort', getCategorySort)
-
 router.get('/productDetails/:id', getproductDetail)
 
 router.use(verifyUser)
@@ -57,6 +60,9 @@ router.get('/orderPlaced', getorderPlaced)
 router.get('/myorder', getmyOrder)
 
 router.post('/couponApply',couponApply)
+
+router.get('/Cancel-order/:id',CancelOrder)
+router.get('/Return-order/:id',ReturnOrder)
 
 
 module.exports = router;

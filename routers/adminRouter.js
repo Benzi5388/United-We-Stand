@@ -1,7 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const { addCategory, adminhome, adminlogin, login, logout, getEditUser, editUser, deleteUser, searchUser, createUser, getCategory, getaddCategory, getaddBrand, addBrand, getBrand, getaddProduct, addProduct, getProduct, deleteCategory, deleteProduct, deleteBrand, editCategory, getEditCategory, getEditProduct, editProduct, getEditBrand, editBrand, getShop, getUser, getAdduser, getaddcoupon, addCoupon, deleteCoupon, getEditCoupon, editCoupon, getCoupon, getorders, orderStatus } = require('../controllers/adminController');
+const { addCategory, getEditUser, editUser, deleteUser, searchUser, createUser, getCategory, getaddCategory, getaddBrand, addBrand, getBrand, getaddProduct, addProduct, getProduct, deleteCategory, deleteProduct, deleteBrand, editCategory, getEditCategory, getEditProduct, editProduct, getEditBrand, editBrand, getUser, getAdduser, getaddcoupon, addCoupon, deleteCoupon, getEditCoupon, editCoupon, getCoupon, getorders, orderStatus, getorderdetail, getaddBanner, addBanner, deleteBanner, getEditBanner, editbanner, getBanner } = require('../controllers/adminController');
+const {adminHome, adminlogin, login, logout } = require ('../controllers/adminAuthController')
 const multipleUpload = require('../middlewares/multer');
+
 const adminModel = require('../models/adminModel')
 const brandModel = require('../models/brandModel')
 const categoryModel = require('../models/categoryModel')
@@ -9,13 +11,11 @@ const { route } = require('./userRouter')
 const verifyAdmin = require('../middlewares/adminSession');
 
 
-
-
 router.get('/adminLogin', adminlogin)
 router.post('/adminLogin', login)
 
 router.get('/logout', logout)
-router.get('/', adminhome)
+router.get('/', adminHome)
 
 
 router.use(verifyAdmin)
@@ -33,6 +33,13 @@ router.get('/product', getProduct)
 router.get("/delete-product/:id", deleteProduct)
 router.get("/edit-product/:id", getEditProduct)
 router.post("/edit-product",multipleUpload.upload, editProduct)
+
+router.get('/add-banner', getaddBanner)
+router.post('/add-banner',multipleUpload.upload, addBanner)
+router.get('/banner', getBanner)
+router.get("/delete-banner/:id", deleteBanner)
+router.get("/edit-bannert/:id", getEditBanner)
+router.post("/edit-banner",multipleUpload.upload, editbanner)
 
 
 router.get('/add-brand', getaddBrand)
@@ -59,4 +66,5 @@ router.post('/add-user', createUser)
 
 router.get('/orders', getorders)
 router.post('/orderStatus',orderStatus)
+router.get('/orderdetail/:_id', getorderdetail)
 module.exports = router

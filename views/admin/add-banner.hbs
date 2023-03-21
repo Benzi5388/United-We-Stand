@@ -1,0 +1,99 @@
+
+<body>
+    <div class="container-xxl position-relative bg-white d-flex p-0">
+        <!-- Spinner Start -->
+        <div id="spinner"
+            class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+
+       <!-- Sidebar Start -->
+        <div class="sidebar pe-4 pb-3">
+            <nav class="navbar bg-light navbar-light">
+                <a href="index.html" class="navbar-brand mx-4 mb-0">
+                    <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>ADMIN</h3>
+                </a>
+                <div class="navbar-nav w-100">
+                    <a href="/admin" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                    <a href="/admin/product" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Products</a>
+                    <a href="/admin/category" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Categories</a>
+                    <a href="/admin/orders" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Order</a>
+                    <a href="/admin/user" class="nav-item nav-link"><i class="fa fa-user me-2"></i>Users</a>
+                    <a href="/admin/coupon" class="nav-item nav-link"><i class="fas fa-tag me-2"></i>Coupons</a>
+                    <a href="/admin/brand" class="nav-item nav-link"><i class="fas fa-building me-2"></i>Brand</a>
+                    <a href="/admin/banner" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Banner</a>
+                </div>
+            </nav>
+        </div>
+        <!-- Sidebar End -->
+
+
+    <!-- Content Start -->
+    <div class="content">
+<!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0 pt-4" style="">
+                <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
+                    <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
+                </a>
+                <a href="#" class="sidebar-toggler flex-shrink-0">
+                    <i class="fa fa-bars"></i>
+                </a>
+                <div class="navbar-nav align-items-center ms-auto">
+                    <div class="nav-item dropdown">
+                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                            <a href="#" class="dropdown-item">
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                    </div>
+                    <a href="/admin/logout" class="btn btn-sm btn-primary">Logout</a>
+                </div>
+            </nav>
+            <!-- Navbar End -->
+
+        <!-- Table Start -->
+        <div class="col-md-6 col-lg-7 d-flex align-items-center">
+              <div class="card-body p-4 p-lg-5 text-black">
+
+                <form action="/admin/add-banner" method="post" enctype="multipart/form-data">
+                  <h5 class="fw-normal mt-0 mb-3 pb-3 ms-1" style="letter-spacing: 1px;">BRAND</h5>
+
+                  <div class="form-outline mb-3">
+                    <input type="text" id="form2Example17" class="form-control form-control-lg" name="name" placeholder="Name" required>
+                  </div>
+                  <div class="form-outline mb-3">
+                    <input type="file" id="form2Example27" accept="image/*" class="form-control form-control-lg"
+                    name="main_image" required/>
+                  <label class="form-label" for="form2Example27"> Main Image</label>
+                  
+                  </div>
+                  {{#if err}}
+                                <div class="mb-3 text-center">
+                                    <b class="text-danger">{{message}}</b>
+                                </div>
+                                {{/if}}
+                  <div class="pt-1 mb-4">
+                    
+                    <button class="btn btn-lg btn-block text-white" type="submit" style="background-color:#D19C97; width:70px; width:100px;">Add</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+        <!-- Table End -->
+        </div>
+        <!-- Content End -->
+
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
+</body>

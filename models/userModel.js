@@ -27,7 +27,8 @@ const userSchema =new mongoose.Schema({
         type:Array
     },
     wallet:{
-        type:Number
+        type:Number,
+        default:0
     },
     banner:{
         type:Boolean

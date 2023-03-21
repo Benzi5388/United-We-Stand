@@ -1,5 +1,5 @@
 const express = require('express')
-
+const path = require('path')
 const {engine}=require('express-handlebars')
 const cookieParser = require("cookie-parser");
 const session = require('express-session');
@@ -10,12 +10,15 @@ const MongoStore = require('connect-mongo');
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const hbs=require('hbs')
+const jwt= require('jsonwebtoken')
 dbConnect();
 const app= express();
 app.use(cookieParser());
 
 app.engine('hbs', engine({extname:'.hbs'}))
 app.set('view engine','hbs')
+// app.set('views', [path.join(__dirname, 'views/admin'),path.join(__dirname, 'views/users')]);
+// app.set('view engine', 'hbs');
 hbs.registerHelper('inc',function(value,options){
     return parseInt(value)+1;
   });

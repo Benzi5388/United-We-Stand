@@ -1,7 +1,8 @@
 const express = require("express");
-// const adminModel = require('../models/adminModel');
+const adminModel = require('../models/adminModel');
 const brandModel = require("../models/brandModel");
 const categoryModel = require("../models/categoryModel");
+const bannerModel = require("../models/bannerModel");
 const productModel = require("../models/productModel");
 const userModel = require("../models/userModel");
 const adminRouter = require("../routers/adminRouter");
@@ -11,57 +12,24 @@ const orderModel = require("../models/orderModel");
 const { findOne } = require("../models/brandModel");
 const router = express.Router();
 
-//GET METHOD FOR ADMIN HOME
-const adminhome = async (req, res) => {
-  const users = await userModel.find().lean();
-
-  if (req.session.admin) {
-    res.render("adminHome", { users });
-  } else {
-    res.redirect("/admin/adminLogin");
-  }
-};
-
-//POST METHOD FOR ADMIN LOGIN
-const adminlogin = (req, res) => {
-    res.render("adminLogin");
-};
-
-//POST REQUEST FOR LOGIN PAGE
-const login = (req, res) => {
-  const email = "admin@gmail.com";
-  const password = "1234";
-
-  if (email == req.body.email && password == req.body.password) {
-    req.session.admin= {
-      id:email,
-    };
-    res.redirect("/admin");
-  } else {
-    res.render("adminLogin", {
-      error: true,
-      message: "Invalid Credentials!!!",
-    });
-  }
-};
-
-//LOGOUT REQUEST
-const logout = (req, res) => {
-  req.session.admin = null;
-  res.redirect("/admin/adminlogin");
-};
 
 //******************************USERS DATA******************************* */
 
 //GET USER
 const getUser = async (req, res) => {
-  const user = await userModel.find().lean();
-  res.render("user", { user });
+  let name = req.query.name ?? "";
+  const user = await userModel.find({
+    $or: [
+      { name: new RegExp(name, "i")},
+      { email: new RegExp(name, "i")}
+    ],
+  }).lean();
+  res.render("admin/user", { user, name });
 };
 
 //GET REQUEST FOR ADD USER
 const getAdduser = (req, res) => {
-  res.render("add-user");
+  res.render("admin/add-user");
 };
 
 //POST REQUEST FOR ADD-USER
@@ -72,7 +40,7 @@ const createUser = (req, res) => {
   if (hasWhiteSpace || name.trim() === "" || hasWhiteSpacepass || password.trim() === "") {
     // handle error if user has white spaces
     const err = "all field reqiured";
-    res.render("add-user", { err: true, message: "Invalid data" });
+    res.render("admin/add-user", { err: true, message: "Invalid data" });
   } else {
     const user = new userModel({ name, email, phone, password });
     user.save((err, data) => {
@@ -90,7 +58,7 @@ const createUser = (req, res) => {
 const getEditUser = async (req, res) => {
   const _id = req.params.id;
   const user = await userModel.findOne({ _id }).lean();
-  res.render("edit-user", { user });
+  res.render("admin/edit-user", { user });
 };
 
 //POST REQUEST FOR EDIT-USER
@@ -103,7 +71,7 @@ const editUser = async (req, res) => {
     if (hasWhiteSpace || name.trim() === "" || hasWhiteSpacepass || password.trim() === "") {
       // handle error if user has white spaces
       const err = "all field required";
-      return res.render("add-user", { err: true, message: "Invalid data" });
+      return res.render("admin/edit-user", { err: true, message: "Invalid data" });
     } else {
       await userModel.findByIdAndUpdate(_id, {
         $set: {
@@ -130,7 +98,7 @@ const searchUser = async (req, res) => {
   const name = req.body.name;
   const users = await userModel.find({ name: new RegExp(name, "i") }).lean();
 
-  res.render("adminHome", { users });
+  res.render("admin/adminHome", { users });
 };
 
 //****************************CATEGORY PAGE******************************************** */
@@ -142,7 +110,7 @@ const addCategory = (req, res) => {
   if (hasWhiteSpace || name.trim() === "") {
     // handle error if category has white spaces
     const err = "all field reqiured";
-    res.render("add-category", { err: true, message: "Invalid data" });
+    res.render("admin/add-category", { err: true, message: "Invalid data" });
   } else {
     const category = new categoryModel({ name });
     category.save((err, data) => {
@@ -157,14 +125,20 @@ const addCategory = (req, res) => {
 
 //GET REQUEST FOR CATEGORY
 const getCategory = async (req, res) => {
-  const category = await categoryModel.find().lean();
+  let name = req.query.name ?? "";
+  const category = await categoryModel.find({
+    $or: [
+      { name: new RegExp(name, "i") },
+    ],
+  }
+  ).lean();
 
-  res.render("category", { category });
+  res.render("admin/category", { category, name });
 };
 
 //GET REQUEST FOR ADD CATEGORY
 const getaddCategory = (req, res) => {
-  res.render("add-category");
+  res.render("admin/add-category");
 };
 
 //DELETE CATEGORY
@@ -180,7 +154,7 @@ const getEditCategory = async (req, res) => {
   const category = await categoryModel.findOne({ _id }).lean();
 
   console.log(category);
-  res.render("edit-category", { category });
+  res.render("admin/edit-category", { category });
 };
 
 //POST REQUEST FOR EDIT-CATEGORY
@@ -192,7 +166,7 @@ const editCategory = async (req, res) => {
   const hasWhiteSpaceName = /\s/g.test(name);
   if (hasWhiteSpaceName || name.trim() === "") {
     const err = "all field reqiured";
-    return res.render("edit-category", {
+    return res.render("admin/edit-category", {
       category,
       err: true,
       message: "Invalid Data!!!",
@@ -208,13 +182,19 @@ const editCategory = async (req, res) => {
 
 //GET REQUEST FOR BRAND
 const getBrand = async (req, res) => {
-  const brand = await brandModel.find().lean();
-  res.render("brand", { brand });
+  let name = req.query.name ?? "";
+  const brand = await brandModel.find({
+    $or: [
+      { name: new RegExp(name, "i") },
+      { category: new RegExp(name, "i") },
+    ],
+  }).lean();
+  res.render("admin/brand", { brand, name });
 };
 
 //GET REQUEST FOR ADD-BRAND
 const getaddBrand = (req, res) => {
-  res.render("add-brand");
+  res.render("admin/add-brand");
 };
 
 //POST REQUEST FOR ADD-BRAND
@@ -223,7 +203,7 @@ const addBrand = (req, res) => {
   const hasWhiteSpaceName = /\s/g.test(name);
   if (hasWhiteSpaceName || name.trim() === "") {
     const err = "all field reqiured";
-    res.render("add-brand", { err: true, message: "Invalid Data!!!" });
+    res.render("admin/add-brand", { err: true, message: "Invalid Data!!!" });
   } else {
     const brand = new brandModel({ name });
     brand.save((err, data) => {
@@ -240,7 +220,7 @@ const addBrand = (req, res) => {
 const getEditBrand = async (req, res) => {
   const _id = req.params.id;
   const brand = await brandModel.findOne({ _id }).lean();
-  res.render("edit-brand", { brand });
+  res.render("admin/edit-brand", { brand });
 };
 
 //POST REQUEST FOR EDIT-BRAND
@@ -251,7 +231,7 @@ const editBrand = async (req, res) => {
   const hasWhiteSpaceName = /\s/g.test(name);
   if (hasWhiteSpaceName || name.trim() === "") {
     const err = "all field reqiured";
-    return res.render("edit-brand", {
+    return res.render("admin/edit-brand", {
       brand,
       err: true,
       message: "Invalid Data!!!",
@@ -276,15 +256,21 @@ const deleteBrand = async (req, res) => {
 
 //GET REQUEST FOR PRODUCT PAGE
 const getProduct = async (req, res) => {
-  const products = await productModel.find().lean();
-  res.render("product", { products });
+  let name = req.query.name ?? "";
+  const products = await productModel.find({
+    $or: [
+      { name: new RegExp(name, "i") },
+      { category: new RegExp(name, "i") }
+    ],
+  }).lean();
+  res.render("admin/product", { products, name});
 };
 
 //GET REQUEST FOR ADD-PRODUCT PAGE
 const getaddProduct = async (req, res) => {
   const brand = await brandModel.find({}).lean();
   const category = await categoryModel.find({}).lean();
-  res.render("add-product", { category, brand });
+  res.render("admin/add-product", { category, brand });
 };
 
 //POST REQUEST FOR ADD PRODUCT
@@ -296,22 +282,22 @@ const addProduct = async (req, res) => {
   const hasWhiteSpaceDescription = /\s/g.test(description);
   if (hasWhiteSpaceName || name.trim() === "" || hasWhiteSpaceDescription || description.trim() === "" || !selectedCategory || !selectedBrand) {
     const err = "";
-    res.render("add-product", { category, brand, err: true, message: "Invalid data!!!" });
+    res.render("admin/add-product", { category, brand, err: true, message: "Invalid data!!!" });
   } else if (price < 0 || mrp < 0 || quantity < 0) {
     const err = "";
-    res.render("add-product", {category, brand,
+    res.render("admin/add-product", {category, brand,
       err: true,
       message: "Price and MRP and Quantity fields cannot be negative.",
     });
   } else if (price >= mrp) {
     const err = "";
-    res.render("add-product", {category, brand,
+    res.render("admin/add-product", {category, brand,
       err: true,
       message: "Price must be less than MRP.",
     });
   } else if (isNaN(price) || isNaN(mrp)) {
     const err = "";
-    res.render("add-product", {category, brand,
+    res.render("admin/add-product", {category, brand,
       err: true,
       message: "Price and MRP fields must be numeric.",
     });
@@ -333,7 +319,7 @@ const getEditProduct = async (req, res) => {
   const brand = await brandModel.find().lean();
   const category = await categoryModel.find().lean();
   
-  res.render("edit-product", { product, category, brand });
+  res.render("admin/edit-product", { product, category, brand });
 };
 
 //POST REQUEST FOR EDIT-PRODUCT
@@ -345,12 +331,29 @@ const editProduct = async (req, res) => {
   const product = await productModel.findOne({_id}).lean()
   const { name, price, mrp, description, quantity, category: selectedCategory , brand: selectedBrand } = req.body;
  
-  
   if ( name.trim() === "" ||  description.trim() === "") {
     const err = "Invalid data";
-
-    res.render("edit-product", { category, brand, product, err: true, message: "Invalid data!!!" });
-  }else{
+    res.render("admin/edit-product", { category, brand, product, err: true, message: "Invalid data!!!" });
+  }else if (price < 0 || mrp < 0 || quantity < 0) {
+    const err = "";
+    res.render("edit-product", {category, brand, product,
+      err: true,
+      message: "Price and MRP and Quantity fields cannot be negative.",
+    });
+  } else if (price >= mrp) {
+    const err = "";
+    res.render("edit-product", {category, brand, product,
+      err: true,
+      message: "Price must be less than MRP.",
+    });
+  } else if (isNaN(price) || isNaN(mrp)) {
+    const err = "";
+    res.render("admin/edit-product", {category, brand,product,
+      err: true,
+      message: "Price and MRP fields must be numeric.",
+    });
+  }
+  else{
     if (!req.files.main_image && !req.files.sub_image) {
       await productModel.findByIdAndUpdate(_id, {
           $set: {
@@ -402,7 +405,13 @@ const deleteProduct = async (req, res) => {
 
 //GET REQUEST FOR COUPON
 const getCoupon = async (req, res) => {
-  const coupon = await couponModel.find().lean();
+  let name = req.query.name ?? "";
+  const coupon = await couponModel.find({
+    $or: [
+      { name: new RegExp(name, "i") },
+      { couponcode: new RegExp(name, "i") },
+    ],
+  }).lean();
   // Check if expiry date is not a past date
   const currentDate = new Date();
   
@@ -412,7 +421,7 @@ const getCoupon = async (req, res) => {
     });
   }
   console.log(coupon);
-  res.render("coupons", { coupon });
+  res.render("admin/coupons", { coupon , name});
 };
 
 //POST REQUEST FOR ADD-COUPON
@@ -424,16 +433,16 @@ const addCoupon = (req, res) => {
 
   if (hasWhiteSpaceName || name.trim() === "" || hasWhiteSpaceCoupon || couponcode.trim() === "" || !expdate) {
     const err = "all field required";
-    res.render("add-coupon", { err: true, message: "Invalid Data!!!" });
+    res.render("admin/add-coupon", { err: true, message: "Invalid Data!!!" });
   } else if (cashback >= minamount) {
     const err = "";
-    res.render("add-coupon", {
+    res.render("admin/add-coupon", {
       err: true,
       message: "cashback must be lesser than the price"
     });
   } else if (cashback < 0 || minamount < 0) {
     const err = "";
-    res.render("add-coupon", {
+    res.render("admin/add-coupon", {
       err: true,
       message: "Fields cannot be negative"
     });
@@ -444,7 +453,7 @@ const addCoupon = (req, res) => {
     console.log("Expiry date:", expiryDate);
     if (expiryDate < currentDate) {
       const err = "Expiry date cannot be a past date";
-      res.render("add-coupon", { err: true, message: err });
+      res.render("admin/add-coupon", { err: true, message: err });
     } else {
       const coupon = new couponModel({
         name,
@@ -468,14 +477,14 @@ const addCoupon = (req, res) => {
 
 //GET REQUEST FOR ADD-COUPON
 const getaddcoupon = (req, res) => {
-  res.render("add-coupon");
+  res.render("admin/add-coupon");
 };
 
 //GET REQUEST FOR EDIT-COUPON
 const getEditCoupon = async (req, res) => {
   const _id = req.params.id;
   const coupon = await couponModel.findOne({ _id }).lean();
-  res.render("edit-coupon", { coupon });
+  res.render("admin/edit-coupon", { coupon });
 };
 
 //POST REQUEST FOR EDIT-COUPON
@@ -489,16 +498,16 @@ const editCoupon = async (req, res) => {
 
   if (hasWhiteSpaceName || name.trim() === "" || hasWhiteSpaceCoupon || couponcode.trim() === ""|| hasWhiteSpaceStatus || status.trim() === "" || !expdate) {
     const err = "all field reqiured";
-    res.render("edit-coupon", { coupon, err: true, message: "Invalid Data!!!" });
+    res.render("admin/edit-coupon", { coupon, err: true, message: "Invalid Data!!!" });
   } else if (cashback >= minamount) {
     const err = "";
-    res.render("edit-coupon", {coupon, 
+    res.render("admin/edit-coupon", {coupon, 
       err: true,
       message: "cashback must be lesser than the price"})
   }
   else if (cashback <0 || minamount<0 ){
     const err = "";
-    res.render("edit-coupon", { coupon,
+    res.render("admin/edit-coupon", { coupon,
       err: true,
       message: "Fileds cannot be negative"})
   } else {
@@ -508,7 +517,7 @@ const editCoupon = async (req, res) => {
     console.log("Expiry date:", expiryDate);
     if (expiryDate < currentDate) {
       const err = "Expiry date cannot be a past date";
-      res.render("add-coupon", { err: true, message: err });
+      res.render("admin/add-coupon", { err: true, message: err });
     } else {
       await couponModel.findByIdAndUpdate(_id, {
         $set: {
@@ -533,12 +542,44 @@ const deleteCoupon = async (req, res) => {
 //GET REQUEST FOR ORDERS
 const getorders = async (req, res) => {
   const _id = req.params.id;
-  const order = await orderModel.find({}).lean();
-  res.render("orders", { order });
+  let name = req.query.name ?? "";
+  console.log(name);
+  const order = await orderModel.find({
+    $or: [
+      { orderStatus: new RegExp(name, "i") },
+    ],
+  }).lean();
+
+  for(i=0;i<order.length;i++){
+    order.map((item, index)=>{
+      order[i].date=order[i].createdAt.toDateString();
+      
+      })
+  }
+  console.log(order);
+  res.render("admin/orders", { order , name});
 };
 
 const orderStatus = async (req, res) => {
   console.log(req.body);
+  
+
+  if (req.body.action == 'Returned') {
+
+    const order = await orderModel.findOne({_id:req.body.id}).lean()
+
+
+    await orderModel.updateOne({ _id:req.body.id }, {
+        $set: {
+            orderStatus: req.body.action
+        }
+    })
+
+    await userModel.updateOne({ _id: order.userId }, { $inc: { wallet: order.total } })
+}
+
+
+
   await orderModel
     .updateOne({ _id: req.body.id }, { $set: { orderStatus: req.body.action } })
     .then((result) => {
@@ -546,8 +587,99 @@ const orderStatus = async (req, res) => {
     });
 };
 
+//********************ORDER DETAIL************************************************** */
+
+//GET METHOD FOR ORDER DETAIL
+const getorderdetail = async (req, res) => {
+  const _id = req.params._id;
+  const order = await orderModel.findById(_id).lean();
+  res.render("admin/orderdetail", { order });
+};
+
+
+//*************************************BANNER PAGE***************************************** */
+
+//GET REQUEST FOR BANNER PAGE
+const getBanner = async (req, res) => {
+  let name = req.query.name ?? "";
+  const banner = await bannerModel.find({
+    $or: [
+      { name: new RegExp(name, "i") },
+      { category: new RegExp(name, "i") }
+    ],
+  }).lean();
+  res.render("admin/banner", { banner, name});
+};
+
+//GET REQUEST FOR ADD-BANNER PAGE
+const getaddBanner = async (req, res) => {
+  const banner = bannerModel.find({}).lean();
+  res.render("admin/add-banner", {banner });
+};
+
+//POST REQUEST FOR ADD BANNER
+const addBanner = async (req, res) => {
+  const banner = await bannerModel.find({}).lean();
+  const { name} = req.body;
+  if (name.trim() === "") {
+    const err = "";
+    res.render("admin/add-banner", { banner, err: true, message: "Invalid data!!!" });
+  }  else {
+    console.log(req.body);
+    await bannerModel
+      .create({ ...req.body, main_image: req.files.main_image[0] })
+
+      .then(() => {
+        res.redirect("/admin/banner");
+      });
+  }
+};
+
+//GET REQUEST FOR EDIT-BANNER
+const getEditBanner = async (req, res) => {
+  const _id = req.params.id;
+  const banner = await bannerModel.findOne({ _id }).lean();
+  res.render("admin/edit-banner", { banner });
+};
+
+//POST REQUEST FOR EDIT-BANNER
+const editbanner = async (req, res) => {
+  const _id = req.body._id
+  console.log(req.body);
+  const name = await bannerModel.findOne({_id}).lean()
+  const { banner} = req.body;
+ 
+  if ( name.trim() === "" ) {
+    const err = "Invalid data";
+    res.render("admin/edit-banner", {banner, err: true, message: "Invalid data!!!" });
+  }
+  else{
+    if (!req.files.main_image) {
+      await bannerModel.findByIdAndUpdate(_id, {
+          $set: {
+              ...req.body
+          }
+      })
+  }
+  res.redirect("/admin/banner")
+}
+  }
+  
+//DELETE BANNER
+const deleteBanner = async (req, res) => {
+  const id = req.params.id;
+  await bannerModel.deleteOne({ _id: id });
+  res.redirect("/admin/banner");
+};
 //EXPORTING MODULES
 module.exports = {
+  getBanner, 
+  addBanner,
+  editbanner, 
+  getEditBanner,
+  getaddBanner,
+  deleteBanner,
+  getorderdetail,
   getorders,
   getCoupon,
   getaddcoupon,
@@ -576,10 +708,6 @@ module.exports = {
   getEditCategory,
   getCategory,
   getaddCategory,
-  adminhome,
-  adminlogin,
-  login,
-  logout,
   deleteUser,
   editUser,
   getEditUser,
