@@ -67,7 +67,7 @@
 
     <!-- Content Start -->
     <div class="content">
-        <!-- Navbar Start -->
+    <!-- Navbar Start -->
             <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0 pt-4" style="">
                 <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
                     <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
@@ -75,7 +75,7 @@
                 <a href="#" class="sidebar-toggler flex-shrink-0">
                     <i class="fa fa-bars"></i>
                 </a>
-                <form action="/admin/orders" method="get" class="d-none d-md-flex ms-4">
+                <form action="/admin/user" method="get" class="d-none d-md-flex ms-4">
                     <input class="form-control border-primary" type="search" placeholder="Search" name="name">
                     <button class="btn btn-sm btn-primary" type="submit"><a href="" style="color:white;"><i class="bi bi-search"></i></a></button></td>
                 </form>
@@ -95,50 +95,75 @@
                 </div>
             </nav>
             <!-- Navbar End -->
+            <!-- Sale & Revenue Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-chart-line fa-3x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Total Revenue</p>
+                                <h6 class="mb-0">Rs {{salesSum}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-chart-area fa-3x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Total Users</p>
+                                <h6 class="mb-0">{{userCount}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-chart-pie fa-3x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Total Orders</p>
+                                <h6 class="mb-0">{{salesCount}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Sale & Revenue End -->
+              <div class="mt-4">
+            <div class="input-group">
 
-
+            </div>
+            <div class="d-flex justify-content-end" style="margin-right: 5rem;">
+                <button onclick=" downloadPdf()" class="btn btn-sm btn-warning rounded">Download as PDF</button>
+                <button onclick=" downloadExcel()" class="ms-3 btn btn-sm btn-warning rounded">Download as
+                    Excel</button>
+            </div>
         <!-- Table Start -->
         <div class="container-fluid pt-4 px-4">
             <div class="row g-4">
                 <div class="col-sm-12 col-xl-12">
                     <div class="bg-light rounded h-100 p-4">
-                        <h6 class="mb-4 ms-2">ORDERS</h6>
                         <table class="table table-hover">
+                            <div class="mb-3">
+                            </div>
                             <thead>
                                 <tr>
-                                    <th scope="col">ORDER ID</th>
-                                    <th scope="col">PAYMENT STATUS</th>
-                                    <th scope="col">NAME</th>
-                                    <th scope="col">CREATED DATE</th>
-                                    <th scope="col">TOTAL</th>
-                                    <th scope="col">ACTION</th>
-                                </tr>
-                                {{#each order}}
+                                <th scope="col">User</th>
+                                <th scope="col">Product</th>
+                                <th scope="col">Order Date</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                                {{#each deliveredOrders}}
                                 <tr>
-                                    <td scope="col"><a href="/admin/orderdetail/{{this._id}}">{{this._id}}</a></td>
-                                    <td scope="col">{{this.orderStatus}}</td>
-                                    <td scope="col">{{this.address.name}}</td>
-                                    <td scope="col">{{this.date}}</td>
-                                    <td scope="col">{{this.total}}</td>
-                                    <td scope="col">
-                                        <form style="display: flex;" action="/admin/orderStatus" method="post">
-                                         
-                                            <select name="action" id="cars">
-                                                <option value="{{this.orderStatus}}" selected hidden>{{this.orderStatus}}</option>
-                                                <option value="Pending">Pending</option>
-                                                <option value="Shipped">Shipped</option>
-                                                <option value="Delivered">Delivered</option>
-                                                <option value="Cancelled">Cancelled</option>
-                                                <option value="Returned">Returned</option>
-                                            </select>
-                                            <br>
-                                            <input type="text" name="id" value="{{this._id}}" hidden>
-                                            <button class="btn btn-outline-dark" type="submit"><i
-                                                    class="bi bi-check"></i></button>
-                                        </form>
-                                    </td>
-
+                                <td>{{this.address.name}}</td>
+                                <td>{{this.product.name}}</td>
+                                <td>{{this.product.createdAt}}</td>
+                                <td>{{this.product.price}}</td>
+                                <td>{{this.product.quantity}}</td>
+                                <td>{{this.orderStatus}}</td>
                                 </tr>
+                                
                                 {{/each}}
                             </thead>
 
@@ -150,8 +175,6 @@
         <!-- Table End -->
     </div>
     <!-- Content End -->
-
-
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
@@ -169,9 +192,62 @@
 
     <!-- Template Javascript -->
     <script src="/js/main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.1/xlsx.full.min.js"></script>
+
+
+    <script>
+        let orders = []
+        {{#each deliveredOrders }}
+        orders.push(['{{this.address.name}}', '{{this.products.name}}', '{{this.orderDate}}', '{{this.quantity}}', '{{this.total}}'
+            , '{{this.orderStatus}}'])
+        {{/each}}
+                let totalRevenue = '{{salesSum}}'
+                let totalOrders = '{{salesCount}}'
+                let Customers = '{{userCount}}'
+                const { jsPDF } = window.jspdf;
+                function downloadPdf() {
+                    const doc = new jsPDF();
+                    doc.text(15, 20, "Perfumio Sales Report");
+                    doc.autoTable({
+                        head: [['Type', 'Details']],
+                        body: [
+                            ['Total Sales', totalOrders],
+                            ['Total Revenue', totalRevenue],
+                            ['Total Customers', Customers],
+                        ],
+                        startY: 40
+                    })
+                    doc.text(15, doc.lastAutoTable.finalY + 20, "order info");
+                    doc.autoTable({
+                        head: [['UserName', 'Product', 'Odrer Date', 'Quantity', 'Amount', "Status"]],
+                        body: orders,
+                        startY: doc.lastAutoTable.finalY + 30
+                    })
+                    doc.save('sales-report.pdf');
+                }
+                function downloadExcel() {
+                    let report = [
+                        { type: "Total Sales", value: totalOrders },
+                        { type: "Total Revenue", value: totalRevenue },
+                        { type: "Total Customers", value: Customers },
+                    ]
+
+                    var sheet1 = XLSX.utils.json_to_sheet(report);
+                    var wb = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(wb, sheet1, "Sales Report");
+
+
+                    XLSX.writeFile(wb, 'sales-report.xlsx');
+                }
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
+
 </body>
 
 </html>

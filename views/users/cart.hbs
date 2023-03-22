@@ -126,7 +126,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Subtotal</h6>
-                            <h6 class="font-weight-medium" id="subTotal">{{totalPrice}}</h6>
+                            <h6 class="font-weight-medium" id="subTotal">Rs. {{totalPrice}}</h6>
                         </div>
                         
                     </div>
@@ -139,7 +139,7 @@
                                 href="/checkout">Proceed To Checkout</a></button>
                     </div>
                 </div>
-            </div>99ik,                      
+            </div>                     
         </div>
         {{/if}}
     </div>
@@ -234,7 +234,7 @@ console.log(totalPrice)
                  totalPriceTag.innerHTML=totalPrice;
                  subTotalPriceTag.innerHTML=totalPrice    
 
-                priceTag.innerHTML= '₹'+quantity*price; 
+                priceTag.innerHTML= 'Rs. '+quantity*price; 
                 document.getElementById('q'+id).value=quantity;
                 document.getElementById('mq'+id).value=quantity;
             }else{

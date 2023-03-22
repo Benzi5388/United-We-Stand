@@ -128,13 +128,14 @@ const login = (req, res) => {
           email: userOg.email,
         };
         res.redirect("/");
+      } else {
+        res.render("users/userLogin", { error: true, message: "Incorrect Credentials" });
       }
-      const error = "no user found";
     } else {
-      const error = "no user found";
-      res.render("users/userLogin", { error: true, message: "Invalid Credentials!!!" });
+      res.render("users/userLogin", { error: true, message: "No user found" });
     }
   };
+  
   
   //LOGOUT REQUEST FOR HOME PAGE
   const userLogout = (req, res) => {

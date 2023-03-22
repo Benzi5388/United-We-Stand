@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { addCategory, getEditUser, editUser, deleteUser, searchUser, createUser, getCategory, getaddCategory, getaddBrand, addBrand, getBrand, getaddProduct, addProduct, getProduct, deleteCategory, deleteProduct, deleteBrand, editCategory, getEditCategory, getEditProduct, editProduct, getEditBrand, editBrand, getUser, getAdduser, getaddcoupon, addCoupon, deleteCoupon, getEditCoupon, editCoupon, getCoupon, getorders, orderStatus, getorderdetail, getaddBanner, addBanner, deleteBanner, getEditBanner, editbanner, getBanner } = require('../controllers/adminController');
+const { addCategory, getEditUser, editUser, deleteUser, searchUser, createUser, getCategory, getaddCategory, getaddBrand, addBrand, getBrand, getaddProduct, addProduct, getProduct, deleteCategory, deleteProduct, deleteBrand, editCategory, getEditCategory, getEditProduct, editProduct, getEditBrand, editBrand, getUser, getAdduser, getaddcoupon, addCoupon, deleteCoupon, getEditCoupon, editCoupon, getCoupon, getorders, orderStatus, getorderdetail, getaddBanner, addBanner, deleteBanner, getEditBanner, editbanner, getBanner, getAdminSalesReport } = require('../controllers/adminController');
 const {adminHome, adminlogin, login, logout } = require ('../controllers/adminAuthController')
 const multipleUpload = require('../middlewares/multer');
 
@@ -25,6 +25,8 @@ router.get('/category', getCategory)
 router.get("/delete-category/:id", deleteCategory)
 router.get("/edit-category/:id", getEditCategory)
 router.post("/edit-category", editCategory)
+
+router.get('/sales', getAdminSalesReport)
 
 
 router.get('/add-product', getaddProduct)

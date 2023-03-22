@@ -19,6 +19,7 @@ const axios = require("axios");
 const {
   CompositionListInstance,
 } = require("twilio/lib/rest/video/v1/composition");
+const { default: mongoose } = require("mongoose");
 
 //GET METHOD FOR HOME PAGE
 const getUserHome = async (req, res) => {
@@ -70,22 +71,24 @@ const getUserProfile = async (req, res) => {
 //GET REQUEST FOR WISH LIST
 
 const getwishList = async (req, res) => {
-  let id = req.session.user.id;
-  let user = await userModel.findOne({ _id: id }, { password: 0 }).lean();
-  let wishlist = user.wishlist;
-  let product = await productModel.find({ _id: { $in: wishlist } }).lean();
-  let empty = true;
-  if (product[0]) {
-    empty = false;
-  }
-  res.render("users/wishList", { product, empty });
+  let id = req.session.user.id;  
+  const user= await userModel.findOne({_id:id},{wishlist:1})
+ let wishid=user.wishlist.map((item)=>{
+  return item.id
+ })
+let products=await productModel.find({_id:{$in:wishid}}).lean()
+  res.render("users/wishList",{products});
 };
+
 const addTowishList = async (req, res) => {
   try {
     const _id = req.session.user.id;
-    const id = req.params.id;
-    await userModel.updateOne({ _id }, { $addToSet: { wishlist: id } });
-    res.redirect("wishList");
+    const id =req.params.id;
+    await userModel.updateOne({ _id:_id },{ $addToSet: {
+      wishlist: {
+        id:id
+      }}});
+    res.redirect("/wishList");
   } catch (err) {}
 };
 
@@ -93,8 +96,8 @@ const getRemoveFromWishlist = async (req, res) => {
   if (req.session.user) {
     const _id = req.session.user.id;
     const proId = req.params.id;
-    console.log(proId);
-    await userModel.updateOne({ _id }, { $pull: { wishlist: proId } });
+    console.log(proId,'asdfghjk');
+    await userModel.updateOne({ _id:_id}, { $pull: { wishlist:{id: proId }}});
     res.redirect("back");
   } else {
     res.redirect("/login");
@@ -110,12 +113,14 @@ const getaddAddress = async (req, res) => {
 //POST REQUEST FOR ADD ADDRESS
 const addAddress = async (req, res) => {
   const _id = req.session.user.id;
-  const { name, street, city, state } = req.body;
+  const { name, phone, street, city, state } = req.body;
+  const phoneRegex = /^\d{10}$/;
   if (
     name.trim() === "" ||
     street.trim() === "" ||
     city.trim() === "" ||
-    state.trim() === ""
+    state.trim() === "" ||
+    !phoneRegex.test(phone)
   ) {
     const err = "all field reqiured";
     res.render("users/add-address", { err: true, message: "Invalid Data!!!" });
@@ -165,12 +170,14 @@ const geteditAddress = async (req, res) => {
 const editAddress = async (req, res) => {
   const id = req.params.id;
 
-  const { name, street, city, state } = req.body;
+  const { name, phone, street, city, state } = req.body;
+  const phoneRegex = /^\d{10}$/;
   if (
     name.trim() === "" ||
     street.trim() === "" ||
     city.trim() === "" ||
-    state.trim() === ""
+    state.trim() === "" ||
+    !phoneRegex.test(phone)
   ) {
     const err = "all field reqiured";
     let { address } = await userModel.findOne(

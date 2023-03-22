@@ -62,7 +62,7 @@
     <!-- Checkout Start -->
    
     <form class="mb-2" action="/couponApply" method="post">
-                    <div class="input-group mb-4 ms-3" style="width:375px;">
+                    <div class="input-group mb-3 ms-3 mt-2" style="width:375px;">
                         <input type="text" value="{{totalPrice}}" name="totalPrice" hidden>
                         <input type="text" class="form-control p-4" placeholder="Coupon Code" name="couponcode">
                         <div class="input-group-append">
@@ -70,26 +70,26 @@
                         </div>
                     </div>
                 </form>
-    <div class="container-fluid pt-5">
+    <div class="container-fluid pt-5" >
          <form action="/checkout" method="post">
         <div class="row px-xl-5">
             <div class="col-lg-8">
                          
-                <div class="mb-4">
-                    <h4 class="font-weight-semi-bold mb-4">Billing Address</h4>
+                <div class="mb-3">
+                    <h4 class="font-weight-semi-bold mb-3">Billing Address</h4>
                 </div>
                    {{#if empty}}
                 <div class="row">
-  <div class="col-12 col-md-6 offset-md-3 text-center">
+    <div class="col-12 col-md-6 offset-md-3 text-center">
                     <img src="/img/add.jpg" style="max-height: 150px; object-fit:contain" alt="">
                     <h1>No saved address</h1>
         <button type="button" class="btn btn-dark btn-lg px-4 gap-3 mt-4"><a href="/add-address"style="text-decoration:none;color:white;">Add Address</a></button>
       </div>
             </div> 
             {{else}} 
-                <div class="row">
+                <div class="row text-center">  
                 {{#each user.address}}
-                <div class="card" style="width: 16rem;height: 30%; display: inline-block;
+                <div class="card mt-3 ms-4" style="width: 18rem;height: 30%; display: inline-block;
     margin-right: 20px; align-items:center">
                     <div class="card-body" >
                         <input type="radio" value="{{this.id}}" name="address" id="{{this._id}}" required>
@@ -105,6 +105,7 @@
                 </div>
                 {{/if}}
             </div>
+            
             <div class="col-lg-4">
                 <div class="card border-secondary mb-4 mt-4">
                     <div class="card-header bg-secondary border-0">
@@ -153,13 +154,13 @@
                     <div class="card-body">
                         <div class="form-group">
                             <div class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input" name="payment" id="paypal" value="cod">
+                                <input type="radio" class="custom-control-input" name="payment" id="paypal" value="cod" required>
                                 <label class="custom-control-label" for="paypal">Cash On Delivery </label>
                             </div>
                         </div>
                         <div class="">
                             <div class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input" name="payment" id="banktransfer" value="online">
+                                <input type="radio" class="custom-control-input" name="payment" id="banktransfer" value="online" required>
                                 <label class="custom-control-label" for="banktransfer">Online Payment</label>
                             </div>
                         </div>
@@ -167,7 +168,6 @@
                     <div class="card-footer border-secondary bg-transparent">
                         <button class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3" type="submit">Place Order</button>
                     </div>
-                    
                 </div>
             </div>
         </div>

@@ -14,14 +14,13 @@ const nodemailer =require('nodemailer')
             var mailOptions={
               from: "benzi5388@gmail.com",
               to: email,
-              subject: "E-cart Email verification",
+              subject: "U&I Email verification",
               html: `
-              <h1>Verify Your Email For E-cart</h1>
-                <h3>use this code in E-cart to verify your email</h3>
+              <h1>Verify Your Email For U&I</h1>
+                <h3>use this code in United We Stand to verify your email</h3>
                 <h2>${otp}</h2>
               `,
-            }
-        
+            }       
             transporter.sendMail(mailOptions, function (error, info) {
               if (error) {
                 reject(error)

@@ -54,6 +54,10 @@ app.use(session({
 app.use('/admin/', adminRouter);
 app.use('/',userRouter);
 
+app.use( function(req, res, next){
+  res.status(404).render("users/404")
+})
+
 
 app.listen(port,()=>{
     console.log('started')

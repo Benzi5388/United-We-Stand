@@ -86,7 +86,6 @@ const editUser = async (req, res) => {
   }
 };
 
-
 //DELETING THE USER
 const deleteUser = async (req, res) => {
   const id = req.params.id;
@@ -671,8 +670,49 @@ const deleteBanner = async (req, res) => {
   await bannerModel.deleteOne({ _id: id });
   res.redirect("/admin/banner");
 };
+
+//******************************SALES REPORT**************************** */
+// GET METHOD FOR ADMIN SALES REPORT
+ const getAdminSalesReport =  async (req, res) => {
+  let orders
+  let deliveredOrders
+  let salesCount
+  let salesSum
+  let result
+  let start = new Date(new Date().setDate(new Date().getDate() - 8));
+  let end = new Date();
+  let filter = req.query.filter ?? "";
+
+  if (req.query.start) start = new Date(req.query.start);
+  if (req.query.end) end = new Date(req.query.end);
+  if (req.query.start) {
+  
+      orders = await orderModel.find({ orderDate: { $gte: start, $lte: end } }).lean()
+
+      deliveredOrders = orders.filter(order => order.orderStatus === "Delivered")
+      salesCount = await orderModel.countDocuments({ createdAt : { $gte: start, $lte: end }, orderStatus: "Delivered" })
+      salesSum = deliveredOrders.reduce((acc, order) => acc + product.total, 0)
+      
+
+  } else {
+
+      deliveredOrders = await orderModel.find({ orderStatus: "Delivered" }).lean()
+
+      salesCount = await orderModel.countDocuments({ orderStatus: "Delivered" })
+      result = await orderModel.aggregate([{ $match: { orderStatus: "Delivered" } },
+      {
+          $group: { _id: null, total: { $sum: '$total' } }
+      }])
+      salesSum = result[0]?.total
+  }
+  const users = await orderModel.distinct('_id')
+  const userCount = users.length
+  res.render('admin/sales', { userCount, salesCount, salesSum, deliveredOrders })
+}
+
 //EXPORTING MODULES
 module.exports = {
+  getAdminSalesReport,
   getBanner, 
   addBanner,
   editbanner, 
