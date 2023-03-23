@@ -110,19 +110,25 @@ const getCart = async (req, res) => {
   
   const addQuantity = async (req, res) => {
     const product = await productModel
-      .findOne({ _id: req.params.id }, { name: 1 })
+      .findOne({ _id: req.params.id })
       .lean();
+      console.log(req.session.user.id,'           ',req.params.id);
+      const {cart}=await userModel.findOne({_id:req.session.user.id,cart:{$elemMatch:{id:req.params.id}}},{'cart.$':1}).lean()
       const maxQuantity = product.quantity;
-    const user = await userModel.updateOne(
-      { _id: req.session.user.id, cart: { $elemMatch: { id: req.params.id } } },
-      {
-        $inc: {
-          "cart.$.quantity": 1,
-        },
+      if (maxQuantity>cart[0].quantity) {
+        const user = await userModel.updateOne(
+          { _id: req.session.user.id, cart: { $elemMatch: { id: req.params.id } } },
+          {
+            $inc: {
+              "cart.$.quantity": 1,
+            },
+          }
+        );
+        res.json({ user });
+      } else {
+      
+        res.json({})
       }
-    );
-  
-    res.json({ user });
   };
   
   const minusQuantity = async (req, res) => {

@@ -277,9 +277,7 @@ const addProduct = async (req, res) => {
   const category = await categoryModel.find({}).lean();
   const brand = await brandModel.find({}).lean();
   const { name, price, mrp, description, quantity, category: selectedCategory , brand: selectedBrand } = req.body;
-  const hasWhiteSpaceName = /\s/g.test(name);
-  const hasWhiteSpaceDescription = /\s/g.test(description);
-  if (hasWhiteSpaceName || name.trim() === "" || hasWhiteSpaceDescription || description.trim() === "" || !selectedCategory || !selectedBrand) {
+  if (name.trim() === "" ||description.trim() === "" || !selectedCategory || !selectedBrand) {
     const err = "";
     res.render("admin/add-product", { category, brand, err: true, message: "Invalid data!!!" });
   } else if (price < 0 || mrp < 0 || quantity < 0) {
@@ -447,9 +445,7 @@ const addCoupon = (req, res) => {
     });
   } else {
     const currentDate = new Date();
-    console.log("Current date:", currentDate);
     const expiryDate = new Date(expdate);
-    console.log("Expiry date:", expiryDate);
     if (expiryDate < currentDate) {
       const err = "Expiry date cannot be a past date";
       res.render("admin/add-coupon", { err: true, message: err });
@@ -511,9 +507,7 @@ const editCoupon = async (req, res) => {
       message: "Fileds cannot be negative"})
   } else {
     const currentDate = new Date();
-    console.log("Current date:", currentDate);
     const expiryDate = new Date(expdate);
-    console.log("Expiry date:", expiryDate);
     if (expiryDate < currentDate) {
       const err = "Expiry date cannot be a past date";
       res.render("admin/add-coupon", { err: true, message: err });
@@ -542,7 +536,6 @@ const deleteCoupon = async (req, res) => {
 const getorders = async (req, res) => {
   const _id = req.params.id;
   let name = req.query.name ?? "";
-  console.log(name);
   const order = await orderModel.find({
     $or: [
       { orderStatus: new RegExp(name, "i") },
@@ -555,12 +548,10 @@ const getorders = async (req, res) => {
       
       })
   }
-  console.log(order);
   res.render("admin/orders", { order , name});
 };
 
 const orderStatus = async (req, res) => {
-  console.log(req.body);
   
 
   if (req.body.action == 'Returned') {
@@ -624,7 +615,6 @@ const addBanner = async (req, res) => {
     const err = "";
     res.render("admin/add-banner", { banner, err: true, message: "Invalid data!!!" });
   }  else {
-    console.log(req.body);
     await bannerModel
       .create({ ...req.body, main_image: req.files.main_image[0] })
 
@@ -644,7 +634,6 @@ const getEditBanner = async (req, res) => {
 //POST REQUEST FOR EDIT-BANNER
 const editbanner = async (req, res) => {
   const _id = req.body._id
-  console.log(req.body);
   const name = await bannerModel.findOne({_id}).lean()
   const { banner} = req.body;
  
@@ -687,13 +676,16 @@ const deleteBanner = async (req, res) => {
   if (req.query.end) end = new Date(req.query.end);
   if (req.query.start) {
   
-      orders = await orderModel.find({ orderDate: { $gte: start, $lte: end } }).lean()
-
+     let orders = await orderModel.find().lean()
+      console.log(orders); 
+        
+ const neworders = orders.map((item, index)=>{         
+          item[index].date=item[index].createdAt.toLocaleDateString();
+          }) 
       deliveredOrders = orders.filter(order => order.orderStatus === "Delivered")
       salesCount = await orderModel.countDocuments({ createdAt : { $gte: start, $lte: end }, orderStatus: "Delivered" })
-      salesSum = deliveredOrders.reduce((acc, order) => acc + product.total, 0)
+      salesSum = deliveredOrders.reduce((acc, orders) => acc + product.total, 0)
       
-
   } else {
 
       deliveredOrders = await orderModel.find({ orderStatus: "Delivered" }).lean()
@@ -707,6 +699,9 @@ const deleteBanner = async (req, res) => {
   }
   const users = await orderModel.distinct('_id')
   const userCount = users.length
+  for (const i of deliveredOrders) {
+    i.createdAt=i.createdAt.toLocaleDateString()
+  }
   res.render('admin/sales', { userCount, salesCount, salesSum, deliveredOrders })
 }
 

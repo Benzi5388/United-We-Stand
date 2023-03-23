@@ -20,18 +20,22 @@ const {
   CompositionListInstance,
 } = require("twilio/lib/rest/video/v1/composition");
 const { default: mongoose } = require("mongoose");
+const bannerModel = require("../models/bannerModel");
 
 //GET METHOD FOR HOME PAGE
 const getUserHome = async (req, res) => {
   let loggedIn = false;
-  const user = await userModel.find().lean();
-  console.log(user.name);
+  const banner=await bannerModel.find().lean()
   const category = await categoryModel.find().lean();
   if (req.session.user) {
+    let user = await userModel.find({_id:req.session.user?.id??''}).lean();
+     user={cartQuantity:user[0].cart.length,
+    userName:user[0].name
+    }
     loggedIn = true;
-    res.render("users/userHome", { category, loggedIn, user });
+    res.render("users/userHome", { category, loggedIn, user,banner});
   } else {
-    res.render("users/userHome", { category });
+    res.render("users/userHome", { category, banner });
   }
 };
 

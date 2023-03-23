@@ -54,7 +54,7 @@
                     </a>
                 
                 <a href="/cart" class="btn border">
-                    <i class="fas fa-shopping-cart text-primary"></i>
+                    <i class="fas fa-shopping-cart text-primary">{{user.cartQuantity}}</i>
                     <span class="badge">0</span>
                 </a>
                 
@@ -78,7 +78,7 @@
                     id="navbar-vertical">
                     <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
                         {{#each category}}
-                        <a href="" class="nav-item nav-link">{{this.name}}</a>
+                        <a href="/shop" class="nav-item nav-link">{{this.name}}</a>
                         {{/each}}
                     </div>
                 </nav>
@@ -95,16 +95,15 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
-                           <a href="/" class="nav-item nav-link active">Home</a>
-                            <a href="/shop" class="nav-item nav-link">Shop</a>
-                        </div>
-                        <div class="navbar-nav ml-auto py-0">
                             {{#if loggedIn}}
-                            <h5 class="nav-item nav-link">Hello {{user.name}}!!</h5>
+                            <h5 class="nav-item nav-link">Welcome {{user.userName}}!!</h5>
                             {{else}}
                             <a href="/login" class="nav-item nav-link"> Login</a>
                             {{/if}}
-                            
+                        </div>
+                        <div class="navbar-nav ml-auto py-0">
+                            <a href="/" class="nav-item nav-link active">Home</a>
+                            <a href="/shop" class="nav-item nav-link">Shop</a>
                         </div>
                     </div>
                 </nav>
@@ -145,7 +144,7 @@
             <div class="col-lg-4 col-md-6 pb-1">
                 <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
                     <p class="text-right">15 Products</p>
-                    <a href="" class="cat-img position-relative overflow-hidden mb-3">
+                    <a href="/shop" class="cat-img position-relative overflow-hidden mb-3">
                         <img class="img-fluid" src="img/groom.jpg" alt="">
                     </a>
                     <h5 class="font-weight-semi-bold m-0">Men's dresses</h5>
@@ -154,7 +153,7 @@
             <div class="col-lg-4 col-md-6 pb-1">
                 <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
                     <p class="text-right">15 Products</p>
-                    <a href="" class="cat-img position-relative overflow-hidden mb-3">
+                    <a href="/shop" class="cat-img position-relative overflow-hidden mb-3">
                         <img class="img-fluid" src="img/bridal.jpg" alt="">
                     </a>
                     <h5 class="font-weight-semi-bold m-0">Women's dresses</h5>
@@ -163,7 +162,7 @@
             <div class="col-lg-4 col-md-6 pb-1">
                 <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
                     <p class="text-right">15 Products</p>
-                    <a href="" class="cat-img position-relative overflow-hidden mb-3">
+                    <a href="/shop" class="cat-img position-relative overflow-hidden mb-3">
                         <img class="img-fluid" src="img/kids.jpg" alt="">
                     </a>
                     <h5 class="font-weight-semi-bold m-0">Baby's dresses</h5>
@@ -172,7 +171,7 @@
             <div class="col-lg-4 col-md-6 pb-1">
                 <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
                     <p class="text-right">15 Products</p>
-                    <a href="" class="cat-img position-relative overflow-hidden mb-3">
+                    <a href="/shop" class="cat-img position-relative overflow-hidden mb-3">
                         <img class="img-fluid" src="img/accessories.jpg" alt="">
                     </a>
                     <h5 class="font-weight-semi-bold m-0">Accerssories</h5>
@@ -181,7 +180,7 @@
             <div class="col-lg-4 col-md-6 pb-1">
                 <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
                     <p class="text-right">15 Products</p>
-                    <a href="" class="cat-img position-relative overflow-hidden mb-3">
+                    <a href="/shop" class="cat-img position-relative overflow-hidden mb-3">
                         <img class="img-fluid" src="img/bags.jpg" alt="">
                     </a>
                     <h5 class="font-weight-semi-bold m-0">Bags</h5>
@@ -190,7 +189,7 @@
             <div class="col-lg-4 col-md-6 pb-1">
                 <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
                     <p class="text-right">15 Products</p>
-                    <a href="" class="cat-img position-relative overflow-hidden mb-3">
+                    <a href="/shop" class="cat-img position-relative overflow-hidden mb-3">
                         <img class="img-fluid" src="img/shoe.jpg" alt="">
                     </a>
                     <h5 class="font-weight-semi-bold m-0">Shoes</h5>
@@ -259,7 +258,7 @@
     <!-- Offer End -->
 
     <!-- Footer Start -->
-    <div class="container-fluid bg-secondary text-dark mt-5 pt-0" >
+    <div class="container-fluid bg-secondary text-dark mt-5 pt-0" style="bottom: 0; width: 100%;">
        <div class="row border-top border-light mx-xl-5 py-4"  >
             <div class="col-md-6 px-xl-0">
                 <p class="mb-md-0 text-center text-md-left text-dark">
