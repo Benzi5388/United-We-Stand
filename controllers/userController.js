@@ -26,6 +26,7 @@ const bannerModel = require("../models/bannerModel");
 const getUserHome = async (req, res) => {
   let loggedIn = false;
   const banner=await bannerModel.find().lean()
+  
   const category = await categoryModel.find().lean();
   if (req.session.user) {
     let user = await userModel.find({_id:req.session.user?.id??''}).lean();
@@ -33,6 +34,7 @@ const getUserHome = async (req, res) => {
     userName:user[0].name
     }
     loggedIn = true;
+    console.log(banner);
     res.render("users/userHome", { category, loggedIn, user,banner});
   } else {
     res.render("users/userHome", { category, banner });
@@ -55,9 +57,7 @@ const getUserProfile = async (req, res) => {
   if (req.session.user) loggedIn = true;
   else res.redirect("/login");
   const _id = req.session.user.id;
-  console.log(_id)
   const user = await userModel.findOne({ _id }).lean();
-  console.log(user)
   let empty = true;
   if (user[0]) {
     empty = false;
@@ -83,7 +83,6 @@ const getwishList = async (req, res) => {
 let products=await productModel.find({_id:{$in:wishid}}).lean()
   res.render("users/wishList",{products});
 };
-
 const addTowishList = async (req, res) => {
   try {
     const _id = req.session.user.id;
@@ -100,7 +99,6 @@ const getRemoveFromWishlist = async (req, res) => {
   if (req.session.user) {
     const _id = req.session.user.id;
     const proId = req.params.id;
-    console.log(proId,'asdfghjk');
     await userModel.updateOne({ _id:_id}, { $pull: { wishlist:{id: proId }}});
     res.redirect("back");
   } else {
@@ -162,7 +160,6 @@ const deleteAddress = async (req, res) => {
 //GET REQUEST FOR EDIT ADDRESS
 const geteditAddress = async (req, res) => {
   const id = req.params.id;
-  console.log(id);
   let { address } = await userModel.findOne(
     { "address.id": id },
     { _id: 0, address: { $elemMatch: { id } } }
@@ -204,7 +201,6 @@ const editAddress = async (req, res) => {
         { $set: { "address.$": req.body } }
       )
       .then((result) => {
-        console.log(result);
       });
     res.redirect("/userProfile");
   }
@@ -220,9 +216,7 @@ const getorderPlaced = async (req, res) => {
 //GET REQUEST FOR MY ORDERS page
 const getmyOrder = async (req, res) => {
   const id = req.session.user.id;
-  console.log(id);
   const order = await orderModel.find({ userId: id }).lean();
-  console.log(order);
   let empty = true;
   if (order[0]) {
     empty = false;

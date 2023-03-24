@@ -552,24 +552,15 @@ const getorders = async (req, res) => {
 };
 
 const orderStatus = async (req, res) => {
-  
-
   if (req.body.action == 'Returned') {
-
     const order = await orderModel.findOne({_id:req.body.id}).lean()
-
-
     await orderModel.updateOne({ _id:req.body.id }, {
         $set: {
             orderStatus: req.body.action
         }
     })
-
     await userModel.updateOne({ _id: order.userId }, { $inc: { wallet: order.total } })
 }
-
-
-
   await orderModel
     .updateOne({ _id: req.body.id }, { $set: { orderStatus: req.body.action } })
     .then((result) => {
@@ -585,7 +576,6 @@ const getorderdetail = async (req, res) => {
   const order = await orderModel.findById(_id).lean();
   res.render("admin/orderdetail", { order });
 };
-
 
 //*************************************BANNER PAGE***************************************** */
 
@@ -634,8 +624,8 @@ const getEditBanner = async (req, res) => {
 //POST REQUEST FOR EDIT-BANNER
 const editbanner = async (req, res) => {
   const _id = req.body._id
-  const name = await bannerModel.findOne({_id}).lean()
-  const { banner} = req.body;
+  const banner = await bannerModel.findOne({_id}).lean()
+  const { name} = req.body;
  
   if ( name.trim() === "" ) {
     const err = "Invalid data";
@@ -645,9 +635,18 @@ const editbanner = async (req, res) => {
     if (!req.files.main_image) {
       await bannerModel.findByIdAndUpdate(_id, {
           $set: {
-              ...req.body
+              name:req.body.name,
+
           }
       })
+  }else{
+    await bannerModel.findByIdAndUpdate(_id, {
+      $set: {
+          name:req.body.name,
+          main_image:req.files.main_image[0]
+
+      }
+  })
   }
   res.redirect("/admin/banner")
 }

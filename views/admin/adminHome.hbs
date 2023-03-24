@@ -132,21 +132,15 @@
 
 <div id="chart" style="margin-right:150px;">
  <h3 style="padding: 12px;font-weight: bold; color: darkblue;">Total Revenue</h3>
-  
 </div>
-
-
 </div>
   <script>
-   
      var options = {
-          series: [
-          
+          series: [     
         {
           name: 'Revenue',
           data: [{{monthlyData}}]
-        } 
-       
+        }   
         ],
           chart: {
           type: 'bar',
@@ -188,8 +182,7 @@
         }
         };
         var chart = new ApexCharts(document.querySelector("#chart"), options);
-       chart.render();
-       
+       chart.render();       
 </script>
           
         </div>

@@ -57,7 +57,7 @@ const adminHome = async (req, res) => {
   const adminlogin = (req, res) => {
       res.render("admin/adminLogin");
   }
-  
+                        
   //POST METHOD FOR LOGIN PAGE
   const login = (req, res) => {
     const email = "admin@gmail.com";

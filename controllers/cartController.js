@@ -249,10 +249,8 @@ const getCart = async (req, res) => {
         req.session.totalAmount =totalPrice;
         req.session.couponStatus=false;
       }
-      console.log( "$$$$$$$$$$$$$$$$$$$$$$$$$$$",req.session.redeemCoupon);
 
  if(req.session.redeemCoupon){
-  console.log("hello");
   res.render("users/checkout", {
     user,
     product,
@@ -264,7 +262,6 @@ const getCart = async (req, res) => {
     empty
   });
  }else{
-  console.log("haiii");
   res.render('users/checkout', {
     user,
     product,
@@ -333,7 +330,7 @@ const getCart = async (req, res) => {
             customer_phone: address[0].phone,
           },
           order_meta: {
-            return_url: "http://localhost:1000/return?order_id={order_id}",
+            return_url: "http://unitedwestand.online/return?order_id={order_id}",
           },
         },
       };

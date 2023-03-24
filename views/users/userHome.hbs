@@ -54,15 +54,17 @@
                     </a>
                 
                 <a href="/cart" class="btn border">
-                    <i class="fas fa-shopping-cart text-primary">{{user.cartQuantity}}</i>
+                    <i class="fas fa-shopping-cart text-primary position-relative">
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded bg-primary ms-2">
+                       {{user.cartQuantity}}
+                             </span>               
+                         </i>
                     <span class="badge">0</span>
-                </a>
-                
+                </a>             
             </div>
         </div>
     </div>
     <!-- Topbar End -->
-
 
     <!-- Navbar Start -->
     <div class="container-fluid mb-5">
@@ -235,11 +237,15 @@
         <div class="row px-xl-5">
             <div class="col-md-6 pb-4">
                 <div class="position-relative bg-secondary text-center text-md-right text-white mb-2 py-5 px-5">
-                    <img src="img/wedc.jpg" alt="">
+                    {{#each banner}}
+                    <img src="/product-images/{{this.main_image.filename}}" alt="">
+                    {{/each}}
                     <div class="position-relative" style="z-index: 1;">
-                        <h5 class="text-uppercase text-primary mb-3">20% off the all order</h5>
+                        {{#each banner}}
+                        <h5 class="text-uppercase text-primary mb-3">{{this.name}}</h5>
+                        {{/each}}
                         <h1 class="mb-4 font-weight-semi-bold">Wedding<br>Collection</h1>
-                        <a href="" class="btn btn-outline-primary py-md-2 px-md-3">Shop Now</a>
+                        <a href="/shop" class="btn btn-outline-primary py-md-2 px-md-3">Shop Now</a>
                     </div>
                 </div>
             </div>
@@ -249,7 +255,7 @@
                     <div class="position-relative" style="z-index: 1;">
                         <h5 class="text-uppercase text-primary mb-3">20% off the all order</h5>
                         <h1 class="mb-4 font-weight-semi-bold">Accessories<br>Collection</h1>
-                        <a href="" class="btn btn-outline-primary py-md-2 px-md-3">Shop Now</a>
+                        <a href="/shop" class="btn btn-outline-primary py-md-2 px-md-3">Shop Now</a>
                     </div>
                 </div>
             </div>

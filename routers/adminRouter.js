@@ -40,7 +40,7 @@ router.get('/add-banner', getaddBanner)
 router.post('/add-banner',multipleUpload.upload, addBanner)
 router.get('/banner', getBanner)
 router.get("/delete-banner/:id", deleteBanner)
-router.get("/edit-bannert/:id", getEditBanner)
+router.get("/edit-banner/:id", getEditBanner)
 router.post("/edit-banner",multipleUpload.upload, editbanner)
 
 
