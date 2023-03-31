@@ -166,10 +166,8 @@
 
 <script>
 
-let totalPrice=Number({{totalPrice}})
-
-console.log(totalPrice)
-
+        let totalPrice=Number({{totalPrice}})
+        console.log(totalPrice)
         async function addQuantity(id,price){
             const response=await axios.get('/addQuantity/'+id)
             if(response.data.user?.acknowledged){

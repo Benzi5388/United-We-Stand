@@ -10,6 +10,7 @@ const multipleUpload = require("../middlewares/multer");
 const couponModel = require("../models/couponModel");
 const orderModel = require("../models/orderModel");
 const { findOne } = require("../models/brandModel");
+const moment = require("moment/moment");
 const router = express.Router();
 
 
@@ -141,11 +142,30 @@ const getaddCategory = (req, res) => {
 };
 
 //DELETE CATEGORY
-const deleteCategory = async (req, res) => {
-  const id = req.params.id;
-  await categoryModel.deleteOne({ _id: id });
-  res.redirect("/admin/category");
-};
+ const deleteCategory= async (req, res) => {
+  try {
+    const id = req.params.id;
+    console.log(id);
+    const cat = await categoryModel.findOne(
+      { _id: id },
+      { name: 1, _id: 0 }
+    );
+
+    const product = await productModel.find({ category: cat.name });
+    console.log(product);
+
+    if (product.length === 0) {
+      await categoryModel.deleteOne({ _id: id });
+      res.redirect("/admin/category");
+    } else {
+      const msg = "Product exists, Operation failed";
+      categories = await categoryModel.find().lean();
+      res.render(`admin/category`, { msg, categories });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 //GET REQUEST FOR EDIT-CATEGORY
 const getEditCategory = async (req, res) => {
@@ -670,20 +690,16 @@ const deleteBanner = async (req, res) => {
   let start = new Date(new Date().setDate(new Date().getDate() - 8));
   let end = new Date();
   let filter = req.query.filter ?? "";
-
   if (req.query.start) start = new Date(req.query.start);
   if (req.query.end) end = new Date(req.query.end);
   if (req.query.start) {
-  
+  start.setHours(0,0,0,0);
+  end.setHours(24,0,0,0)
      let orders = await orderModel.find().lean()
-      console.log(orders); 
-        
- const neworders = orders.map((item, index)=>{         
-          item[index].date=item[index].createdAt.toLocaleDateString();
-          }) 
-      deliveredOrders = orders.filter(order => order.orderStatus === "Delivered")
+      deliveredOrders = orders.filter(order => order.orderStatus === "Delivered"&&order.createdAt>=start&&order.createdAt<=end)
       salesCount = await orderModel.countDocuments({ createdAt : { $gte: start, $lte: end }, orderStatus: "Delivered" })
-      salesSum = deliveredOrders.reduce((acc, orders) => acc + product.total, 0)
+      salesSum = deliveredOrders.reduce((acc, orders) => acc + orders.total, 0)
+         
       
   } else {
 
@@ -701,7 +717,9 @@ const deleteBanner = async (req, res) => {
   for (const i of deliveredOrders) {
     i.createdAt=i.createdAt.toLocaleDateString()
   }
-  res.render('admin/sales', { userCount, salesCount, salesSum, deliveredOrders })
+  start=moment(new Date().setDate(new Date(req.query.start).getDate())).utc().format('YYYY-MM-DD');
+      end=moment(new Date().setDate(new Date(req.query.end).getDate())).utc().format('YYYY-MM-DD')  
+  res.render('admin/sales', { userCount, salesCount, salesSum, deliveredOrders,start,end})
 }
 
 //EXPORTING MODULES

@@ -97,12 +97,34 @@
                 <button class="btn btn-sm btn" style="background-color:#D19C97;"><a style="color:white"
                                                 href="/edit-address/{{this.id}}"><i
                                         class="fa fa-edit"></i></a></button>
-                <button class="btn btn-sm btn" style="background-color:#D19C97;"><a style="color:white"
-                                                href="/delete-address/{{this.id}}"  onclick="return confirm('Are you sure to delete?')"><i
-                                        class="fa fa-trash"></i></a></button>
-              </div>
-            </div>
-            <hr>
+                 <button class="btn btn-sm btn" style="background-color:#D19C97;"
+                                                type="button" data-bs-toggle="modal" data-bs-target="#a{{this.id}}"><i
+                                                    class="fa fa-trash" style="color:white;"></i></button>
+                                        </td>
+                                    </tr>
+                                    {{!-- modaL --}}
+                                    <div class="modal fade" id="a{{this.id}}" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Alert
+                                                    </h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Do You Want To Delete This Address ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                    <a href="/delete-address/{{this.id}}"><button type="button"
+                                                            class="btn btn" style="background-color:#D19C97;color:white;">Delete</button></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
             {{/each}}
             {{/if}}
             <div class="d-flex justify-content-center mb-2">

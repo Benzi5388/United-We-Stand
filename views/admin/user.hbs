@@ -118,17 +118,38 @@
                                     <td scope="col">{{this.email}}</td>
                                     <td scope="col">{{this.phone}}</td>
                                     <td scope="col">
-                                        {{!-- <a class="btn btn-dark" href="/admin/edit-user/{{this._id}}">Edit</a>
-                                        <a class="btn btn-danger" href="/admin/delete-user/{{this._id}}" onclick="return confirm('Are you sure you want to delete?')">Delete</a> --}}
+                                    
                                         <button class="btn btn-sm btn" style="background-color:#D19C97; padding-right:5px;"><a style="color:white"
                                                 href="/admin/edit-user/{{this._id}}"><i
                                         class="fa fa-edit"></i></a></button>
-                <button class="btn btn-sm btn" style="background-color:#D19C97;"><a style="color:white"
-                                                href="/admin/delete-user/{{this._id}}"  onclick="return confirm('Are you sure to delete?')"><i
-                                        class="fa fa-trash"></i></a></button>
-                                    </td>
-                                    
-                                </tr>
+                 <button class="btn btn-sm btn" style="background-color:#D19C97;"
+                                                type="button" data-bs-toggle="modal" data-bs-target="#a{{this._id}}"><i
+                                                    class="fa fa-trash" style="color:white;"></i></button>
+                                        </td>
+                                    </tr>
+                                    {{!-- modaL --}}
+                                    <div class="modal fade" id="a{{this._id}}" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Alert
+                                                    </h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Do You Want To Delete This User ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                    <a href="/admin/delete-user/{{this._id}}"><button type="button"
+                                                            class="btn btn-primary">Delete</button></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 {{/each}}
                             </thead>
 

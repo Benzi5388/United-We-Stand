@@ -28,7 +28,6 @@ router.post("/edit-category", editCategory)
 
 router.get('/sales', getAdminSalesReport)
 
-
 router.get('/add-product', getaddProduct)
 router.post('/add-product',multipleUpload.upload, addProduct)
 router.get('/product', getProduct)
