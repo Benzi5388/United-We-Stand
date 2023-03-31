@@ -159,8 +159,8 @@ const getaddCategory = (req, res) => {
       res.redirect("/admin/category");
     } else {
       const msg = "Product exists, Operation failed";
-      categories = await categoryModel.find().lean();
-      res.render(`admin/category`, { msg, categories });
+      category = await categoryModel.find().lean();
+      res.render(`admin/category`, { msg, category });
     }
   } catch (error) {
     console.log(error);
